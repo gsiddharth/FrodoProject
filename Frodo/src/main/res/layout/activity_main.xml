@@ -11,4 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/login" />
+    <fragment android:name="com.applications.frodo.SignupFragment"
+        android:id="@+id/signupFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/signup" />
+
 </LinearLayout>
