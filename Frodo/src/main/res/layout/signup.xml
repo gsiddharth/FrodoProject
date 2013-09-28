@@ -32,82 +32,92 @@
             android:text="@string/app_name" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/com_signup_body_text"
-            android:text="@string/com_signup_handle_text" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/handle"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/com_signup_handlebox_margin_left"
-            android:layout_marginRight="@dimen/com_signup_handlebox_margin_right"
-            android:width="@dimen/com_signup_handlebox_width"
-            android:editable="true"
-            android:background="#FFFFFF"
-            android:textColor="#000000"/>
-    </LinearLayout>
-
-    <TextView
+    <TableLayout
+        android:id="@+id/registrationTableLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/com_signup_body_text"/>
+        android:measureWithLargestChild="false"
+        android:showDividers="none"
+        android:layout_marginTop="@dimen/com_signup_table_top_margin"
+        android:layout_gravity="center">
+        <TableRow>
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/com_signup_body_text"
+                android:text="@string/com_signup_handle_text"
+                android:layout_marginRight="15dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/com_signup_body_text"
-            android:text="@string/com_signup_email_text" />
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/handle"
+                android:layout_gravity="center"
+                android:width="@dimen/com_signup_handlebox_width"
+                android:editable="true"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:fontFamily="sans-serif"
+                android:padding="4dp"
+                android:height="20dp"
+                android:textSize="12sp"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/email"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/com_signup_emailbox_margin_left"
-            android:layout_marginRight="@dimen/com_signup_emailbox_margin_right"
-            android:width="@dimen/com_signup_emailbox_width"
-            android:editable="true"
-            android:background="#FFFFFF"
-            android:textColor="#000000"
-            android:hint="username@domail.com" />
-    </LinearLayout>
+        </TableRow>
 
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:fontFamily="sans-serif"
+                android:textSize="@dimen/com_signup_body_text"/>
+        </TableRow>
 
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/com_signup_body_text"
+                android:text="@string/com_signup_email_text"
+                android:layout_marginRight="15dp"/>
 
-    <com.applications.frodo.com.applications.frodo.widgets.SignupButton
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/email"
+                android:layout_gravity="center"
+                android:width="@dimen/com_signup_emailbox_width"
+                android:editable="true"
+                android:padding="4dp"
+                android:background="#FFFFFF"
+                android:textColor="#000000"
+                android:textStyle="normal"
+                android:fontFamily="sans-serif"
+                android:hint="username@domail.com"
+                android:height="20dp"
+                android:textSize="12sp"/>
+        </TableRow>
+
+    </TableLayout>
+
+    <com.applications.frodo.widgets.SignupButton
         android:id="@id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="15dp"
+        android:width="100sp"
         android:background="@color/signup_button_bgcolor"
         android:textColor="@color/signup_button_textcolor"
         android:paddingLeft="@dimen/com_signupbutton_padding_left"

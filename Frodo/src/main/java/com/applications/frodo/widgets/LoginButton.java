@@ -1,4 +1,4 @@
-package com.applications.frodo.com.applications.frodo.widgets;
+package com.applications.frodo.widgets;
 
 import android.content.Context;
 import android.util.AttributeSet;

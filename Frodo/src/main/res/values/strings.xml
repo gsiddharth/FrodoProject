@@ -15,4 +15,12 @@
     <string name="facebook_read_permissions">user_events, user_about_me, user_photos, photo_upload</string>
     <string name="facebook_write_permissions">publish_stream</string>
 
+
+    <!-- Backend Configuration -->
+    <string name="host_ip">127.0.0.1</string>
+    <string name="host_port">80</string>
+    <string name="signup_query">/?username/?password/?facebookid</string>
+    <string name="user_data_query">/?username/?password/?facebookid</string>
+    <string name="timeout">10000</string>
+
 </resources>

@@ -25,6 +25,7 @@ android {
 dependencies {
     compile files('libs/android-support-v4.jar')
     compile project(':libraries:facebook')
+    compile "org.apache.commons:commons-lang3:3.1"
 	// You must install or update the Support Repository through the SDK manager to use this dependency.
 	// The Support Repository (separate from the corresponding library) can be found in the Extras category.
 	// compile 'com.android.support:appcompat-v7:18.0.0'
