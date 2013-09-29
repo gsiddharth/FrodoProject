@@ -49,64 +49,13 @@ public class SignupButton extends Button{
     }
 
     private void finishInit(){
-        setOnClickListener(new SignupClickListener());
 
     }
 
     private class SignupClickListener implements OnClickListener {
 
-        private String ip;
-        private int port;
-        private String query;
-
-        public SignupClickListener(){
-            this.ip = getResources().getString(R.string.host_ip);
-            try{
-                this.port=Integer.parseInt(getResources().getString(R.string.host_port));
-            }catch(Exception e){
-                this.port=80;
-            }
-
-            this.query=getResources().getString(R.string.signup_query);
-        }
-
         @Override
         public void onClick(View v){
-            HttpClient client=new DefaultHttpClient();
-
-
-
-            String query=this.query.replaceFirst("[?]username", "");
-            HttpGet request= new HttpGet("http://"+ip+":"+port+"/"+query);
-
-            try{
-                HttpResponse response = client.execute(request);
-                StatusLine status = response.getStatusLine();
-
-                if (status.getStatusCode() != 200) {
-                    throw new IOException("Invalid response from server: " + status.toString());
-                }
-
-                // Pull content stream from response
-                HttpEntity entity = response.getEntity();
-                InputStream inputStream = entity.getContent();
-
-                ByteArrayOutputStream content = new ByteArrayOutputStream();
-
-                // Read response into a buffered stream
-                int readBytes = 0;
-                byte[] sBuffer = new byte[512];
-                while ((readBytes = inputStream.read(sBuffer)) != -1) {
-                    content.write(sBuffer, 0, readBytes);
-                }
-
-                // Return result from buffered stream
-                String dataAsString = new String(content.toByteArray());
-
-
-            }catch(Exception e){
-
-            }
 
         }
 

@@ -12,7 +12,7 @@
 
     <!-- Facebook configuration -->
     <string name="facebook_app_id">584696474923426</string>
-    <string name="facebook_read_permissions">user_events, user_about_me, user_photos, photo_upload</string>
+    <string name="facebook_read_permissions">user_events, user_about_me, user_photos</string>
     <string name="facebook_write_permissions">publish_stream</string>
 
 

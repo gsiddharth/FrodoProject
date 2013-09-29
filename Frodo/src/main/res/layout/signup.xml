@@ -64,8 +64,9 @@
                 android:textColor="#000000"
                 android:fontFamily="sans-serif"
                 android:padding="4dp"
-                android:height="20dp"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:singleLine="true"
+                android:linksClickable="false"/>
 
         </TableRow>
 
@@ -104,8 +105,8 @@
                 android:textStyle="normal"
                 android:fontFamily="sans-serif"
                 android:hint="username@domail.com"
-                android:height="20dp"
-                android:textSize="12sp"/>
+                android:textSize="12sp"
+                android:maxLines="1"/>
         </TableRow>
 
     </TableLayout>
@@ -127,6 +128,6 @@
         android:textSize="@dimen/com_signupbutton_text_size"
         android:textStyle="bold"
         android:text="@string/signup_button_text"
-        />
+        android:onClick="onSignupButtonClick" />
 
 </LinearLayout>
