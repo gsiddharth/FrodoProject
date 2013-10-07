@@ -7,6 +7,14 @@ import com.applications.frodo.blocks.User;
 import com.facebook.model.GraphLocation;
 import com.facebook.model.GraphUser;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Created by siddharth on 26/09/13.
  */
@@ -50,4 +58,25 @@ public class Convertors {
         location.setLongitude(graphLocation.getLongitude());
         return location;
     }
+
+    public static String getString(HttpResponse response) throws IOException{
+        // Pull content stream from response
+        HttpEntity entity = response.getEntity();
+        InputStream inputStream = entity.getContent();
+
+        ByteArrayOutputStream content = new ByteArrayOutputStream();
+
+        // Read response into a buffered stream
+        int readBytes = 0;
+        byte[] sBuffer = new byte[512];
+        while ((readBytes = inputStream.read(sBuffer)) != -1) {
+            content.write(sBuffer, 0, readBytes);
+        }
+
+        // Return result from buffered stream
+        String dataAsString = new String(content.toByteArray());
+        return dataAsString;
+    }
+
+
 }

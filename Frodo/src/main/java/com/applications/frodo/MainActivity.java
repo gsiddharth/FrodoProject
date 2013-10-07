@@ -11,7 +11,11 @@ import android.view.View;
 
 import com.applications.frodo.blocks.SocialNetworks;
 import com.applications.frodo.networking.BackendRequestParameters;
+import com.applications.frodo.networking.ILogin;
+import com.applications.frodo.networking.ILoginCallback;
 import com.applications.frodo.networking.ISignup;
+import com.applications.frodo.networking.LoginStatus;
+import com.applications.frodo.networking.LoginWithFacebook;
 import com.applications.frodo.networking.SignupFactory;
 import com.applications.frodo.utils.Convertors;
 import com.facebook.Request;
@@ -45,6 +49,8 @@ public class MainActivity extends FragmentActivity{
                 }
             };
 
+    ILogin login= new LoginWithFacebook();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +79,9 @@ public class MainActivity extends FragmentActivity{
         BackendRequestParameters.getInstance().setPort(Integer.parseInt(getResources().getString(R.string.host_port)));
         BackendRequestParameters.getInstance().setGetUserDataQuery(getResources().getString(R.string.user_data_query));
         BackendRequestParameters.getInstance().setSingupQuery(getResources().getString(R.string.signup_query));
+        BackendRequestParameters.getInstance().setLoginQuery(getResources().getString(R.string.login_query));
+        BackendRequestParameters.getInstance().setShouldSignupQuery(getResources().getString(R.string.should_signup_query));
+
     }
 
     private void showFragment(int fragmentIndex, boolean addToBackStack) {
@@ -184,19 +193,28 @@ public class MainActivity extends FragmentActivity{
         Request request = Request.newMeRequest(session,
                 new Request.GraphUserCallback() {
                     @Override
-                    public void onCompleted(GraphUser user, Response response) {
+                    public void onCompleted(final GraphUser user, final Response response) {
                         // If the response is successful
                         if (session == Session.getActiveSession()) {
                             if (user != null) {
+
                                 GlobalParameters.getInstance().setUser(Convertors.convertToUser(user));
 
-                                ISignup signup= SignupFactory.getInstance().getSignup(SocialNetworks.FACEBOOK);
-
-                                Map<String,String> params=new HashMap<String, String>();
-                                params.put("socialnetid", user.getId());
-
-                                if(signup.shouldSignup(params)){
-                                    showFragment(SIGNUP,false);
+                                if(login.getLoginStatus()!=LoginStatus.SUCCESS){
+                                    login.login(user.getInnerJSONObject().toString(),new ILoginCallback() {
+                                        @Override
+                                        public void onLogin(LoginStatus loginStatus) {
+                                            System.out.println("========>>> User logged in");
+                                            onCompleted(user,response);
+                                        }
+                                    });
+                                }
+                                else{
+                                    System.out.println("========>>> Showing Signup Fragment");
+                                    if(GlobalParameters.getInstance().getUser().getUsername()==null){
+                                        System.out.println("========>>> Shown Signup Fragment");
+                                        showFragment(SIGNUP,false);
+                                    }
                                 }
                             }
                         }

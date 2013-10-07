@@ -14,6 +14,11 @@ import com.applications.frodo.networking.SignupFactory;
 import com.applications.frodo.networking.SignupWithSocialNetworkID;
 import com.facebook.Session;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,14 +50,20 @@ public class SignupFragment extends Fragment {
         TextView userNameTextView = (TextView) this.getActivity().findViewById(R.id.handle);
         String username=userNameTextView.getText().toString();
 
-        TextView emailView = (TextView) this.getActivity().findViewById(R.id.email);
-        String email=emailView.getText().toString();
-
-
         Map<String, String> singupData=new HashMap<String, String>();
-        singupData.put("email", email);
         singupData.put("username", username);
-        singupData.put("socialnetid", GlobalParameters.getInstance().getUser().getFacebookId());
+
+        ISignup signup=new SignupWithSocialNetworkID(GlobalParameters.getInstance().getUser(),
+                BackendRequestParameters.getInstance().getIp(),BackendRequestParameters.getInstance().getPort(),
+                BackendRequestParameters.getInstance().getSingupQuery(),BackendRequestParameters.getInstance().getGetUserDataQuery(),
+                BackendRequestParameters.getInstance().getTimeout());
+        signup.singup(singupData,new ResponseHandler<String>() {
+            @Override
+            public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
+                System.out.println("-----=========>>>>> Sign..."+httpResponse.toString());
+                return "";
+            }
+        });
     }
 
 }

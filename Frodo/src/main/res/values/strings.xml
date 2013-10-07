@@ -12,15 +12,24 @@
 
     <!-- Facebook configuration -->
     <string name="facebook_app_id">584696474923426</string>
-    <string name="facebook_read_permissions">user_events, user_about_me, user_photos</string>
+    <string name="facebook_read_permissions">user_events, user_about_me, user_photos, email</string>
     <string name="facebook_write_permissions">publish_stream</string>
 
-
     <!-- Backend Configuration -->
-    <string name="host_ip">127.0.0.1</string>
-    <string name="host_port">80</string>
-    <string name="signup_query">/?username/?password/?facebookid</string>
+    <!--<string name="host_ip">10.71.113.123</string>-->
+    <string name="host_ip">192.168.248.1</string>
+    <string name="host_port">3000</string>
+    <string name="should_signup_query">/user/shouldregister</string>
+    <string name="signup_query">/user/register/?username</string>
     <string name="user_data_query">/?username/?password/?facebookid</string>
+    <string name="login_query">/users/auth/facebook/callback</string>
     <string name="timeout">10000</string>
+
+
+    <!-- Menu Screen Settings -->
+    <string name="camera_icon_text">Camera</string>
+    <string name="events_icon_text">Events</string>
+    <string name="checkin_icon_text">Check In</string>
+    <string name="photos_icon_text">Photos</string>
 
 </resources>

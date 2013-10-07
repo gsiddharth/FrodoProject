@@ -9,6 +9,8 @@ public class BackendRequestParameters {
     private String ip;
     private int port;
     private String singupQuery;
+    private String shouldSignupQuery;
+    private String loginQuery;
     private String getUserDataQuery;
     private int timeout;
 
@@ -58,4 +60,22 @@ public class BackendRequestParameters {
     public void setTimeout(int timeout) {
         this.timeout = timeout;
     }
+
+    public String getLoginQuery() {
+        return loginQuery;
+    }
+
+    public void setLoginQuery(String loginQuery) {
+        this.loginQuery = loginQuery;
+    }
+
+    public String getShouldSignupQuery() {
+        return shouldSignupQuery;
+    }
+
+    public void setShouldSignupQuery(String shouldSignupQuery) {
+        this.shouldSignupQuery = shouldSignupQuery;
+    }
+
+
 }

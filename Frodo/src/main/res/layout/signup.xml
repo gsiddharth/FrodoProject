@@ -81,34 +81,6 @@
                 android:textSize="@dimen/com_signup_body_text"/>
         </TableRow>
 
-        <TableRow>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/com_signup_body_text"
-                android:text="@string/com_signup_email_text"
-                android:layout_marginRight="15dp"/>
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/email"
-                android:layout_gravity="center"
-                android:width="@dimen/com_signup_emailbox_width"
-                android:editable="true"
-                android:padding="4dp"
-                android:background="#FFFFFF"
-                android:textColor="#000000"
-                android:textStyle="normal"
-                android:fontFamily="sans-serif"
-                android:hint="username@domail.com"
-                android:textSize="12sp"
-                android:maxLines="1"/>
-        </TableRow>
-
     </TableLayout>
 
     <com.applications.frodo.widgets.SignupButton

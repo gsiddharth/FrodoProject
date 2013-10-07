@@ -29,7 +29,7 @@ public class SignupFactory {
                 if(signups.containsKey(socialNet)){
                     return signups.get(socialNet);
                 }else{
-                    ISignup signup=new SignupWithSocialNetworkID(socialNet, GlobalParameters.getInstance().getUser(),
+                    ISignup signup=new SignupWithSocialNetworkID(GlobalParameters.getInstance().getUser(),
                             BackendRequestParameters.getInstance().getIp(),BackendRequestParameters.getInstance().getPort(),
                             BackendRequestParameters.getInstance().getSingupQuery(),BackendRequestParameters.getInstance().getGetUserDataQuery(),
                             BackendRequestParameters.getInstance().getTimeout());
@@ -39,6 +39,4 @@ public class SignupFactory {
             }
         }
     }
-
-
 }

@@ -23,7 +23,7 @@
     <dimen name="com_signup_emailbox_margin_left">10dp</dimen>
     <dimen name="com_signup_emailbox_margin_right">40dp</dimen>
     <dimen name="com_signup_emailbox_width">200sp</dimen>
-    <dimen name="com_signup_table_top_margin">50dp</dimen>
+    <dimen name="com_signup_table_top_margin">70dp</dimen>
 
 
 </resources>
