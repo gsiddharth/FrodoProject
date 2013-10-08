@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="EventSummary">
+        <attr name="summary" format="string" />
+        <attr name="datetime" format="string" />
+        <attr name="title" format="string" />
+    </declare-styleable>
+</resources>

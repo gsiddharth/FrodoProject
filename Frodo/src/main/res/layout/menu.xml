@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="#ffffff" >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="#000000"
-        android:layout_weight="0.35">
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,30 +38,30 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/eventAlbumMenuButton"
+                android:id="@+id/manageMyEventsMenuButton"
                 android:layout_weight="0.5"
-                android:background="#2a0905"
+                android:background="#940ac1"
                 android:layout_margin="2px"
                 android:clickable="true"
                 android:text="@string/events_icon_text"
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:textColor="#ffffff"
-                android:textAlignment="viewEnd" />/>
+                android:textAlignment="viewEnd" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/myPhotosMenuButton"
+                android:id="@+id/uploadPhotosMenu"
                 android:layout_weight="0.5"
                 android:background="#114115"
                 android:layout_margin="2px"
                 android:clickable="true"
-                android:text="@string/photos_icon_text"
+                android:text="@string/upload_icon_text"
                 android:textStyle="bold"
                 android:textSize="20dp"
                 android:textColor="#ffffff"
-                android:textAlignment="viewEnd" />/>
+                android:textAlignment="viewEnd" />
         </LinearLayout>
 
         <LinearLayout

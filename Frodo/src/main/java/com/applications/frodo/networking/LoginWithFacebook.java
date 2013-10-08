@@ -53,8 +53,9 @@ public class LoginWithFacebook implements ILogin {
                     JSONObject resultObject=new JSONObject(result);
                     System.out.println("=====>>>>"+resultObject);
                     if(resultObject.get("status").toString().equalsIgnoreCase("success")){
+                        System.out.println("======>>>>>"+resultObject.get("username"));
                         if(!resultObject.isNull("username")){
-                            GlobalParameters.getInstance().getUser().setUsername(resultObject.getString("username"));
+                            GlobalParameters.getInstance().getUser().setUsername(resultObject.get("username").toString());
                         }
                         loginStatus=LoginStatus.SUCCESS;
                         loginCallback.onLogin(LoginStatus.SUCCESS);

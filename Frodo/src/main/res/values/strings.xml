@@ -16,7 +16,7 @@
     <string name="facebook_write_permissions">publish_stream</string>
 
     <!-- Backend Configuration -->
-    <!--<string name="host_ip">10.71.113.123</string>-->
+    <!-- <string name="host_ip">10.71.113.123</string> -->
     <string name="host_ip">192.168.248.1</string>
     <string name="host_port">3000</string>
     <string name="should_signup_query">/user/shouldregister</string>
@@ -25,11 +25,15 @@
     <string name="login_query">/users/auth/facebook/callback</string>
     <string name="timeout">10000</string>
 
-
     <!-- Menu Screen Settings -->
     <string name="camera_icon_text">Camera</string>
-    <string name="events_icon_text">Events</string>
+    <string name="events_icon_text">My Events</string>
     <string name="checkin_icon_text">Check In</string>
     <string name="photos_icon_text">Photos</string>
+    <string name="title_activity_application">Frodo</string>
+    <string name="title_section1">Menu</string>
+    <string name="title_section2">Check In</string>
+    <string name="title_section3">Event Phots</string>
+    <string name="upload_icon_text">Upload</string>
 
 </resources>

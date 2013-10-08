@@ -1,5 +1,6 @@
 package com.applications.frodo;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -190,6 +191,7 @@ public class MainActivity extends FragmentActivity{
      */
     private void onFacebookLogin(){
         final Session session=Session.getActiveSession();
+        final Activity currentActivity=this;
         Request request = Request.newMeRequest(session,
                 new Request.GraphUserCallback() {
                     @Override
@@ -198,7 +200,9 @@ public class MainActivity extends FragmentActivity{
                         if (session == Session.getActiveSession()) {
                             if (user != null) {
 
-                                GlobalParameters.getInstance().setUser(Convertors.convertToUser(user));
+                                if(GlobalParameters.getInstance().getUser()==null){
+                                    GlobalParameters.getInstance().setUser(Convertors.convertToUser(user));
+                                }
 
                                 if(login.getLoginStatus()!=LoginStatus.SUCCESS){
                                     login.login(user.getInnerJSONObject().toString(),new ILoginCallback() {
@@ -211,9 +215,14 @@ public class MainActivity extends FragmentActivity{
                                 }
                                 else{
                                     System.out.println("========>>> Showing Signup Fragment");
+                                    System.out.println("======>>>>>"+GlobalParameters.getInstance().getUser().getUsername());
                                     if(GlobalParameters.getInstance().getUser().getUsername()==null){
                                         System.out.println("========>>> Shown Signup Fragment");
                                         showFragment(SIGNUP,false);
+                                    }else{
+                                        Intent intent=new Intent(currentActivity, ApplicationActivity.class);
+                                        startActivity(intent);
+
                                     }
                                 }
                             }
