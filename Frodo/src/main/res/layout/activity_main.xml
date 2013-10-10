@@ -6,19 +6,19 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <fragment android:name="com.applications.frodo.LoginFragment"
+    <fragment android:name="com.applications.frodo.views.LoginFragment"
         android:id="@+id/loginFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/login" />
 
-    <fragment android:name="com.applications.frodo.SignupFragment"
+    <fragment android:name="com.applications.frodo.views.SignupFragment"
         android:id="@+id/signupFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/signup" />
 
-    <fragment android:name="com.applications.frodo.LoadingFragment"
+    <fragment android:name="com.applications.frodo.views.LoadingFragment"
         android:id="@+id/loadingFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

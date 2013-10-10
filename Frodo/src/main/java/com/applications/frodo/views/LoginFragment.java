@@ -1,4 +1,4 @@
-package com.applications.frodo;
+package com.applications.frodo.views;
 
 import android.os.Bundle;
 
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.applications.frodo.R;
 import com.facebook.widget.LoginButton;
 
 import java.util.Arrays;

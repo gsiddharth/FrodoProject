@@ -8,6 +8,19 @@ package com.applications.frodo.blocks;
  * and not implemented directly.
  */
 public interface ILocation {
+
+    /**
+     *
+     * @return the name of the location
+     */
+    public String getName();
+
+    /**
+     * Sets the name of the location
+     * @param name
+     */
+    public void setName(String name);
+
     /**
      * Returns the street component of the location.
      *

@@ -35,5 +35,10 @@
     <string name="title_section2">Check In</string>
     <string name="title_section3">Event Phots</string>
     <string name="upload_icon_text">Upload</string>
+    <string name="title_activity_checkin">Check In</string>
+    <string name="checkin_title_section1">Events</string>
+
+
+    <string name="possible_date_formats">yyyy-MM-dd\'T\'HH:mm:ssZ||||yyyy-MM-dd</string>
 
 </resources>

@@ -5,6 +5,7 @@ package com.applications.frodo.blocks;
  */
 public class Location implements ILocation {
 
+    private String name;
     private String street;
     private String city;
     private String state;
@@ -81,5 +82,15 @@ public class Location implements ILocation {
     @Override
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 }

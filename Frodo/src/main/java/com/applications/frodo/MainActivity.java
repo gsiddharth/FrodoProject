@@ -10,24 +10,20 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.View;
 
-import com.applications.frodo.blocks.SocialNetworks;
 import com.applications.frodo.networking.BackendRequestParameters;
 import com.applications.frodo.networking.ILogin;
 import com.applications.frodo.networking.ILoginCallback;
-import com.applications.frodo.networking.ISignup;
 import com.applications.frodo.networking.LoginStatus;
 import com.applications.frodo.networking.LoginWithFacebook;
-import com.applications.frodo.networking.SignupFactory;
 import com.applications.frodo.utils.Convertors;
+import com.applications.frodo.views.home.ApplicationActivity;
+import com.applications.frodo.views.SignupFragment;
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends FragmentActivity{
 
@@ -208,16 +204,12 @@ public class MainActivity extends FragmentActivity{
                                     login.login(user.getInnerJSONObject().toString(),new ILoginCallback() {
                                         @Override
                                         public void onLogin(LoginStatus loginStatus) {
-                                            System.out.println("========>>> User logged in");
                                             onCompleted(user,response);
                                         }
                                     });
                                 }
                                 else{
-                                    System.out.println("========>>> Showing Signup Fragment");
-                                    System.out.println("======>>>>>"+GlobalParameters.getInstance().getUser().getUsername());
                                     if(GlobalParameters.getInstance().getUser().getUsername()==null){
-                                        System.out.println("========>>> Shown Signup Fragment");
                                         showFragment(SIGNUP,false);
                                     }else{
                                         Intent intent=new Intent(currentActivity, ApplicationActivity.class);
@@ -239,140 +231,3 @@ public class MainActivity extends FragmentActivity{
     }
 
 }
-
-
-
-
-/*
-    */
-/**
- * This class is called to request read permissions from the user
- * @return - true if the permisssions has not already been granted
- *         - false if the permissions has already been granted
- *
- *
- *//*
-
-    private synchronized boolean requestReadPermissions(){
-
-        */
-/*String readPermissions[]= getResources().getString(R.string.facebook_read_permissions).split(",");
-        List<String> permissionList=new ArrayList<String>();
-        for(int i=0;i<readPermissions.length;i++){
-            permissionList.add(readPermissions[i].trim());
-        }
-
-        Session session=Session.getActiveSession();
-
-        List<String> allowedPermissions=session.getPermissions();
-
-        if(!allowedPermissions.containsAll(permissionList)){
-
-            if(session!=null && !requestingReadPermission && !requestingWritePermission){
-                Session.NewPermissionsRequest newPermissionsRequest=new Session.NewPermissionsRequest(this, permissionList).setRequestCode(REAUTH_ACTIVITY_CODE);
-                session.requestNewReadPermissions(newPermissionsRequest);
-                requestingReadPermission=true;
-            }
-            return true;
-        }*//*
-
-        return false;
-    }
-
-    private boolean needToAskReadPermissions(){
-        */
-/*String readPermissions[]= getResources().getString(R.string.facebook_read_permissions).split(",");
-        List<String> permissionList=new ArrayList<String>();
-        for(int i=0;i<readPermissions.length;i++){
-            permissionList.add(readPermissions[i].trim());
-        }
-
-
-        Session session=Session.getActiveSession();
-
-        List<String> allowedPermissions=session.getPermissions();
-
-        System.out.println("READ====>"+allowedPermissions+"||||||||"+permissionList);
-
-        return !allowedPermissions.containsAll(permissionList);*//*
-
-        return false;
-    }
-
-    */
-/**
- * This class is called to request write permissions from the user
- * @return - true if the permisssions has not already been granted
- *         - false if the permissions has already been granted
- *
- *
- *//*
-
-    private synchronized boolean requestWritePermissions(){
-        */
-/*String writePermissions[]= getResources().getString(R.string.facebook_write_permissions).split(",");
-        List<String> permissionList=new ArrayList<String>();
-        for(int i=0;i<writePermissions.length;i++){
-            permissionList.add(writePermissions[i].trim());
-        }
-
-        Session session=Session.getActiveSession();
-
-        List<String> allowedPermissions=session.getPermissions();
-
-        if(!allowedPermissions.containsAll(permissionList)){
-            if(session!=null && !requestingReadPermission && !requestingWritePermission){
-                Session.NewPermissionsRequest newPermissionsRequest=new Session.NewPermissionsRequest(this, permissionList).setRequestCode(WRAUTH_ACTIVITY_CODE);
-                session.requestNewPublishPermissions(newPermissionsRequest);
-                requestingWritePermission=true;
-            }
-            return true;
-        }
-*//*
-
-        return false;
-    }
-
-    private boolean needToAskWritePermissions(){
-  */
-/*      String writePermissions[]= getResources().getString(R.string.facebook_write_permissions).split(",");
-        List<String> permissionList=new ArrayList<String>();
-        for(int i=0;i<writePermissions.length;i++){
-            permissionList.add(writePermissions[i].trim());
-        }
-
-        Session session=Session.getActiveSession();
-
-        List<String> allowedPermissions=session.getPermissions();
-
-        System.out.println("WRITE====>"+allowedPermissions+"||||||||"+permissionList);
-
-        return !allowedPermissions.containsAll(permissionList);
-*//*
-
-
-        return false;
-    }
-*/
-
-
-
-
-   /* public void printHashKey() {
-
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo("com.applications.frodo",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("TEMPTAGHASH KEY:",
-                        Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
-
-    }*/

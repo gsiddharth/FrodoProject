@@ -1,7 +1,5 @@
-package com.applications.frodo;
+package com.applications.frodo.views.checkin;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 
@@ -13,7 +11,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
-public class ApplicationActivity extends FragmentActivity {
+import com.applications.frodo.R;
+
+public class CheckinActivity extends FragmentActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -23,17 +23,17 @@ public class ApplicationActivity extends FragmentActivity {
      * intensive, it may be best to switch to a
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    ViewPager mViewPager;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_application);
+        setContentView(R.layout.activity_checkin);
 
 
         // Create the adapter that will return a fragment for each of the three
@@ -49,11 +49,11 @@ public class ApplicationActivity extends FragmentActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.application, menu);
+        getMenuInflater().inflate(R.menu.checkin, menu);
         return true;
     }
-
-
+    
+    
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -67,25 +67,16 @@ public class ApplicationActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            FragmentManager fm=getSupportFragmentManager();
-            Fragment fragment = null;
             switch(position){
-                case 0: return new MenuFragment();
-                case 1: return new MenuFragment();
-                case 2: return new MenuFragment();
+                case 0: return new EventCheckinFragment();
+                default: return null;
             }
-            if(fragment!=null){
-                Bundle args = new Bundle();
-                args.putInt(MenuFragment.ARG_SECTION_NUMBER, position + 1);
-                fragment.setArguments(args);
-            }
-            return fragment;
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 1;
         }
 
         @Override
@@ -93,14 +84,11 @@ public class ApplicationActivity extends FragmentActivity {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                    return getString(R.string.checkin_title_section1).toUpperCase(l);
             }
             return null;
         }
     }
+
 
 }

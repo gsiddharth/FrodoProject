@@ -98,8 +98,7 @@
             android:textStyle="bold"
             android:textSize="20dp"
             android:textColor="#ffffff"
-            android:textAlignment="viewEnd"
-            android:onClick=""/>
+            android:textAlignment="viewEnd"/>
 
         <Button
             android:layout_width="match_parent"

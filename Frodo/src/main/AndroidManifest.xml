@@ -33,8 +33,12 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name="com.applications.frodo.ApplicationActivity"
+            android:name=".views.home.ApplicationActivity"
             android:label="@string/title_activity_application" >
+        </activity>
+        <activity
+            android:name=".views.checkin.CheckinActivity"
+            android:label="@string/title_activity_checkin" >
         </activity>
     </application>
 

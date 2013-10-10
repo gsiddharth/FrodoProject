@@ -7,7 +7,6 @@ import com.applications.frodo.blocks.IUser;
  */
 public class GlobalParameters {
     private static GlobalParameters ourInstance = new GlobalParameters();
-
     private IUser user;
 
     public static GlobalParameters getInstance() {

@@ -1,4 +1,4 @@
-package com.applications.frodo;
+package com.applications.frodo.views;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.applications.frodo.GlobalParameters;
+import com.applications.frodo.R;
 import com.applications.frodo.blocks.SocialNetworks;
 import com.applications.frodo.networking.BackendRequestParameters;
 import com.applications.frodo.networking.ISignup;
