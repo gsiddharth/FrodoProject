@@ -15,13 +15,13 @@ public interface ISignup {
      * @param params
      *          list of credentials of the user
      */
-    public void shouldSignup(Map<String, String> params, ResponseHandler<String> responseHandler);
+    public void shouldSignup(Map<String, String> params, HttpConnectionHandler.ReponseCallBack responseHandler);
 
     /**
      * This method needs to called to send the signup request
      * @param params
      *          a map of credential type and credential value
      */
-    public void singup(Map<String, String> params, ResponseHandler<String> responseHandler);
+    public void singup(Map<String, String> params, HttpConnectionHandler.ReponseCallBack responseHandler);
 
 }

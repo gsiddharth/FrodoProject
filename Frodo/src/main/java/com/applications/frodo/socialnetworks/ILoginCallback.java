@@ -1,4 +1,4 @@
-package com.applications.frodo.networking;
+package com.applications.frodo.socialnetworks;
 
 /**
  * Created by siddharth on 01/10/13.

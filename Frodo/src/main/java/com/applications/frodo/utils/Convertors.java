@@ -47,6 +47,7 @@ public class Convertors {
         user.setName(graphUser.getName());
         user.setLocation(convertToLocation(graphUser.getLocation()));
         user.setFacebookId(graphUser.getId());
+        user.setUsername(graphUser.getUsername());
         return user;
     }
 
@@ -151,5 +152,16 @@ public class Convertors {
         }
 
         return null;
+    }
+
+    public static String toString(Calendar cal, String... formats){
+        for(String format:formats){
+            try{
+                SimpleDateFormat fm=new SimpleDateFormat(format);
+                return fm.format(cal.getTime());
+            }catch(Exception e){
+            }
+        }
+        return "";
     }
 }

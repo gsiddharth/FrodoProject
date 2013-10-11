@@ -1,24 +1,17 @@
-package com.applications.frodo.networking;
+package com.applications.frodo.socialnetworks.facebook;
 
 import android.util.Log;
 
 import com.applications.frodo.GlobalParameters;
-import com.applications.frodo.utils.Convertors;
+import com.applications.frodo.networking.BackendRequestParameters;
+import com.applications.frodo.networking.HttpConnectionHandler;
+import com.applications.frodo.socialnetworks.ILogin;
+import com.applications.frodo.socialnetworks.ILoginCallback;
+import com.applications.frodo.socialnetworks.LoginStatus;
 import com.facebook.Session;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.ResponseHandler;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -39,21 +32,13 @@ public class LoginWithFacebook implements ILogin {
 
         HttpConnectionHandler.getInstance().sendJson(
                 BackendRequestParameters.getInstance().getLoginQuery()+"?access_token="+Session.getActiveSession().getAccessToken(),
-                null, new ResponseHandler<String>() {
+                null, new HttpConnectionHandler.ReponseCallBack(){
+
             @Override
-            public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
-
-                StatusLine status = httpResponse.getStatusLine();
-                if (status.getStatusCode() != 200) {
-                    throw new IOException("Invalid response from server: " + status.toString());
-                }
-                String result=Convertors.getString(httpResponse);
-
+            public void onHttpResponse(int status, String result) {
                 try{
                     JSONObject resultObject=new JSONObject(result);
-                    System.out.println("=====>>>>"+resultObject);
                     if(resultObject.get("status").toString().equalsIgnoreCase("success")){
-                        System.out.println("======>>>>>"+resultObject.get("username"));
                         if(!resultObject.isNull("username")){
                             GlobalParameters.getInstance().getUser().setUsername(resultObject.get("username").toString());
                         }
@@ -66,7 +51,7 @@ public class LoginWithFacebook implements ILogin {
                 }catch(Exception e){
                     Log.e(TAG, "Error in result object: Expected JSON. Result => "+result, e);
                 }
-                return null;
+
             }
         });
     }

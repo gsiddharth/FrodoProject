@@ -44,7 +44,7 @@ public class SignupWithSocialNetworkID implements ISignup{
 
 
     @Override
-    public void shouldSignup(Map<String, String> params, ResponseHandler<String> responseHandler) {
+    public void shouldSignup(Map<String, String> params, HttpConnectionHandler.ReponseCallBack responseHandler) {
         JSONObject jParams=new JSONObject(params);
         HttpConnectionHandler.getInstance().sendJson(BackendRequestParameters.getInstance().getShouldSignupQuery(),
                 jParams, responseHandler);
@@ -52,7 +52,7 @@ public class SignupWithSocialNetworkID implements ISignup{
     }
 
     @Override
-    public void singup(Map<String, String> params, ResponseHandler<String> responseHandler) {
+    public void singup(Map<String, String> params, HttpConnectionHandler.ReponseCallBack responseHandler) {
         JSONObject jParams=new JSONObject(params);
         String signupQuery=BackendRequestParameters.getInstance().getSingupQuery();
         signupQuery=singupQuery.replace("?username", params.get("username"));

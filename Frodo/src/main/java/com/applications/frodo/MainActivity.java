@@ -11,10 +11,10 @@ import android.view.Menu;
 import android.view.View;
 
 import com.applications.frodo.networking.BackendRequestParameters;
-import com.applications.frodo.networking.ILogin;
-import com.applications.frodo.networking.ILoginCallback;
-import com.applications.frodo.networking.LoginStatus;
-import com.applications.frodo.networking.LoginWithFacebook;
+import com.applications.frodo.socialnetworks.ILogin;
+import com.applications.frodo.socialnetworks.ILoginCallback;
+import com.applications.frodo.socialnetworks.LoginStatus;
+import com.applications.frodo.socialnetworks.facebook.LoginWithFacebook;
 import com.applications.frodo.utils.Convertors;
 import com.applications.frodo.views.home.ApplicationActivity;
 import com.applications.frodo.views.SignupFragment;
@@ -200,7 +200,7 @@ public class MainActivity extends FragmentActivity{
                                     GlobalParameters.getInstance().setUser(Convertors.convertToUser(user));
                                 }
 
-                                if(login.getLoginStatus()!=LoginStatus.SUCCESS){
+                               /* if(login.getLoginStatus()!=LoginStatus.SUCCESS){
                                     login.login(user.getInnerJSONObject().toString(),new ILoginCallback() {
                                         @Override
                                         public void onLogin(LoginStatus loginStatus) {
@@ -208,7 +208,7 @@ public class MainActivity extends FragmentActivity{
                                         }
                                     });
                                 }
-                                else{
+                                else{*/
                                     if(GlobalParameters.getInstance().getUser().getUsername()==null){
                                         showFragment(SIGNUP,false);
                                     }else{
@@ -216,7 +216,7 @@ public class MainActivity extends FragmentActivity{
                                         startActivity(intent);
 
                                     }
-                                }
+                                /*}*/
                             }
                         }
                         if (response.getError() != null) {

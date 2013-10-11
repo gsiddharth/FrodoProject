@@ -18,6 +18,7 @@
     <!-- Backend Configuration -->
     <!-- <string name="host_ip">10.71.113.123</string> -->
     <string name="host_ip">192.168.248.1</string>
+    <!--<string name="host_ip">192.168.42.95</string>-->
     <string name="host_port">3000</string>
     <string name="should_signup_query">/user/shouldregister</string>
     <string name="signup_query">/user/register/?username</string>

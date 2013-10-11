@@ -1,9 +1,11 @@
 package com.applications.frodo.networking;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
+import com.applications.frodo.utils.Convertors;
+
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -13,12 +15,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.json.JSONObject;
 
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by siddharth on 29/09/13.
@@ -31,12 +27,8 @@ public class HttpConnectionHandler {
     private final int port;
     private final HttpParams httpParams=new BasicHttpParams();
     private HttpClient client;
-    private Queue<RequestResponse> queue=new ConcurrentLinkedQueue<RequestResponse>();
-    private Executor executor=new ThreadPoolExecutor(10,20,100000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(20));
 
     private HttpConnectionHandler(){
-        Log.i(TAG, "Initializing==> IP="+BackendRequestParameters.getInstance().getIp()+
-                ";Port=" +BackendRequestParameters.getInstance().getPort());
         this.ip= BackendRequestParameters.getInstance().getIp();
         this.port=BackendRequestParameters.getInstance().getPort();
         HttpConnectionParams.setConnectionTimeout(httpParams, BackendRequestParameters.getInstance().getTimeout());
@@ -48,7 +40,7 @@ public class HttpConnectionHandler {
     }
 
 
-    public void sendJson(String query,JSONObject json, ResponseHandler<String> responseHandler){
+    public void sendJson(String query,JSONObject json, ReponseCallBack responseHandler){
         HttpPost httpPost= new HttpPost("http://"+ip+":"+port+"/"+ query);
 
         try{
@@ -60,47 +52,74 @@ public class HttpConnectionHandler {
             httpPost.setHeader("content-type", "application/json");
             se.setContentType("application/json");
             httpPost.setEntity(se);
-            executor.execute(new RequestExecutor(new RequestResponse(httpPost,responseHandler)));
+            RequestExecutor executor=new RequestExecutor(responseHandler);
+            executor.execute(new RequestResponse(httpPost,responseHandler));
 
         }catch (Exception e){
             Log.e(TAG,"Connection Error",e);
         }
     }
 
-    public void sendGetRequest(String query, ResponseHandler<String> responseHandler){
-        HttpGet request= new HttpGet("http://"+ip+":"+port+"/"+ query);
+    public void sendGetRequest(String query, ReponseCallBack responseHandler){
+        HttpGet httpGet= new HttpGet("http://"+ip+":"+port+"/"+ query);
 
         try{
-            queue.add(new RequestResponse(request,responseHandler));
+            RequestExecutor executor=new RequestExecutor(responseHandler);
+            executor.execute(new RequestResponse(httpGet,responseHandler));
         }catch (Exception e){
             Log.e(TAG,"Connection Error",e);
         }
     }
 
 
-    private class RequestExecutor implements Runnable{
+    private class RequestExecutor extends AsyncTask<RequestResponse, Integer, HttpResponse[]> {
 
-        private RequestResponse reqRes;
+        private String TAG=RequestExecutor.class.toString();
 
-        public RequestExecutor(RequestResponse reqRes){
-            this.reqRes=reqRes;
+        private ReponseCallBack responseHandler;
+
+        public RequestExecutor(ReponseCallBack responseHandler){
+            this.responseHandler=responseHandler;
         }
 
-        public void run(){
-            if(reqRes.postRequest!=null){
-                try{
-                    client.execute(reqRes.postRequest,reqRes.responseHandler);
-                }catch(Exception e){
+        @Override
+        protected HttpResponse[] doInBackground(RequestResponse... requestResponses) {
 
-                }
-            }else if(reqRes.getRequest!=null){
-                try{
-                    client.execute(reqRes.getRequest,reqRes.responseHandler);
-                }catch(Exception e){
-
+            HttpResponse[] result=new HttpResponse[requestResponses.length];
+            for(int i=0;i<requestResponses.length;i++){
+                RequestResponse reqRes=requestResponses[i];
+                if(reqRes.postRequest!=null){
+                    try{
+                        org.apache.http.HttpResponse response=client.execute(reqRes.postRequest);
+                        HttpResponse hResponse=new HttpResponse(response.getStatusLine().getStatusCode(), Convertors.getString(response));
+                        result[i]=hResponse;
+                    }catch(Exception e){
+                        Log.e(TAG,"Client request error "+reqRes.getRequest.getURI(),e);
+                    }
+                }else if(reqRes.getRequest!=null){
+                    try{
+                        org.apache.http.HttpResponse response=client.execute(reqRes.postRequest);
+                        HttpResponse hResponse=new HttpResponse(response.getStatusLine().getStatusCode(), Convertors.getString(response));
+                        result[i]=hResponse;
+                    }catch(Exception e){
+                        Log.e(TAG,"Client request error "+reqRes.getRequest.getURI(),e);
+                    }
                 }
             }
+            return result;
+        }
 
+        @Override
+        protected void onPostExecute(HttpResponse[] result){
+            if(result!=null){
+                for(HttpResponse response:result){
+                    try{
+                        responseHandler.onHttpResponse(response.getStatus(),response.getResult());
+                    }catch(Exception e){
+                        Log.e(TAG,"Error while handling response",e);
+                    }
+                }
+            }
         }
     }
 
@@ -108,16 +127,47 @@ public class HttpConnectionHandler {
 
         private HttpPost postRequest=null;
         private HttpGet getRequest=null;
-        private ResponseHandler<String> responseHandler;
+        private ReponseCallBack responseHandler;
 
-        public RequestResponse(HttpPost post, ResponseHandler<String> responseHandler){
+        public RequestResponse(HttpPost post, ReponseCallBack responseHandler){
             this.postRequest=post;
             this.responseHandler=responseHandler;
         }
 
-        public RequestResponse(HttpGet get, ResponseHandler<String> responseHandler){
+        public RequestResponse(HttpGet get, ReponseCallBack responseHandler){
             this.getRequest=get;
             this.responseHandler=responseHandler;
+        }
+    }
+
+    public static interface ReponseCallBack{
+        public void onHttpResponse(int status, String response);
+    }
+
+    private class HttpResponse{
+        private int status;
+        private String result;
+
+        public HttpResponse(int status, String result){
+            this.status=status;
+            this.result=result;
+        }
+
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public String getResult() {
+            return result;
+        }
+
+        public void setResult(String result) {
+            this.result = result;
         }
     }
 

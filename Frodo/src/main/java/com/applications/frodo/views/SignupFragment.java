@@ -11,6 +11,7 @@ import com.applications.frodo.GlobalParameters;
 import com.applications.frodo.R;
 import com.applications.frodo.blocks.SocialNetworks;
 import com.applications.frodo.networking.BackendRequestParameters;
+import com.applications.frodo.networking.HttpConnectionHandler;
 import com.applications.frodo.networking.ISignup;
 import com.applications.frodo.networking.SignupFactory;
 import com.applications.frodo.networking.SignupWithSocialNetworkID;
@@ -55,15 +56,15 @@ public class SignupFragment extends Fragment {
         Map<String, String> singupData=new HashMap<String, String>();
         singupData.put("username", username);
 
-        ISignup signup=new SignupWithSocialNetworkID(GlobalParameters.getInstance().getUser(),
+        ISignup signUp=new SignupWithSocialNetworkID(GlobalParameters.getInstance().getUser(),
                 BackendRequestParameters.getInstance().getIp(),BackendRequestParameters.getInstance().getPort(),
                 BackendRequestParameters.getInstance().getSingupQuery(),BackendRequestParameters.getInstance().getGetUserDataQuery(),
                 BackendRequestParameters.getInstance().getTimeout());
-        signup.singup(singupData,new ResponseHandler<String>() {
+
+        signUp.singup(singupData, new HttpConnectionHandler.ReponseCallBack() {
             @Override
-            public String handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
-                System.out.println("-----=========>>>>> Sign..."+httpResponse.toString());
-                return "";
+            public void onHttpResponse(int status, String response) {
+
             }
         });
     }
