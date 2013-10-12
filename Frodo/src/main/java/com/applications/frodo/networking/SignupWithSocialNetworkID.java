@@ -1,10 +1,7 @@
 package com.applications.frodo.networking;
 
 import com.applications.frodo.blocks.IUser;
-import com.applications.frodo.blocks.SocialNetworks;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.ResponseHandler;
 import org.json.JSONObject;
 
 import java.util.Map;

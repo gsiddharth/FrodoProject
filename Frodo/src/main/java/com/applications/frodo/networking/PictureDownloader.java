@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.LruCache;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -15,9 +16,18 @@ import java.net.URL;
 public class PictureDownloader extends AsyncTask<String, Integer, Bitmap[]>{
 
     private static String TAG=PictureDownloader.class.toString();
+
+    private LruCache<String, Bitmap> cache;
     private PictureDownloaderListener listener;
+
     public PictureDownloader(PictureDownloaderListener listener){
         this.listener=listener;
+        this.cache=new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024/8)){
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap){
+                return bitmap.getByteCount()/1024;
+            }
+        };
     }
 
     @Override
@@ -27,11 +37,16 @@ public class PictureDownloader extends AsyncTask<String, Integer, Bitmap[]>{
             for(int i=0;i<urls.length;i++){
                 String urlstr=urls[i];
                 try{
-                    URL url=new URL(urlstr);
-                    InputStream in=new BufferedInputStream(url.openStream());
-                    Bitmap bitmap= BitmapFactory.decodeStream(in);
+                    Bitmap bitmap=cache.get(urlstr);
+                    if(bitmap==null){
+                        URL url=new URL(urlstr);
+                        InputStream in=new BufferedInputStream(url.openStream());
+                        bitmap= BitmapFactory.decodeStream(in);
+                    }
+
                     bitmaps[i]=bitmap;
                     publishProgress((int) (i/((float) urls.length)*100));
+
                 }catch(Exception e){
                     bitmaps[i]=null;
                     Log.e(TAG,"Error while downloading a file from url "+urlstr,e);

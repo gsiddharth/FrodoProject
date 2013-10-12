@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#ffffff" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:background="#000000">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:text="Event Name"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textStyle="bold">
+
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="15">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cameraActivityPhoto"
+            android:layout_gravity="center">
+        </ImageView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/manageMyEventsMenuButton"
+            android:layout_weight="0.5"
+            android:background="#d28a09"
+            android:layout_margin="2px"
+            android:clickable="true"
+            android:text="@string/camera_photo_camera_icon_text"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:textAlignment="viewEnd" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/manageMyEventsMenuButton"
+            android:layout_weight="0.5"
+            android:background="#0c3ec1"
+            android:layout_margin="2px"
+            android:clickable="true"
+            android:text="@string/camera_photo_share_icon_text"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:textAlignment="viewEnd" />
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

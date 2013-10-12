@@ -18,7 +18,7 @@
     <!-- Backend Configuration -->
     <!-- <string name="host_ip">10.71.113.123</string> -->
     <string name="host_ip">192.168.248.1</string>
-    <!--<string name="host_ip">192.168.42.95</string>-->
+    <!-- <string name="host_ip">192.168.42.95</string> -->
     <string name="host_port">3000</string>
     <string name="should_signup_query">/user/shouldregister</string>
     <string name="signup_query">/user/register/?username</string>
@@ -38,8 +38,10 @@
     <string name="upload_icon_text">Upload</string>
     <string name="title_activity_checkin">Check In</string>
     <string name="checkin_title_section1">Events</string>
-
-
     <string name="possible_date_formats">yyyy-MM-dd\'T\'HH:mm:ssZ||||yyyy-MM-dd</string>
+    <string name="title_activity_camera_photo">Frodo</string>
+
+    <string name="camera_photo_camera_icon_text">Camera</string>
+    <string name="camera_photo_share_icon_text">Share</string>
 
 </resources>

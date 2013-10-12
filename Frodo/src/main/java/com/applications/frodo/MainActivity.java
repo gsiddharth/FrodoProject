@@ -10,10 +10,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.View;
 
+import com.applications.frodo.db.PersistanceMap;
 import com.applications.frodo.networking.BackendRequestParameters;
 import com.applications.frodo.socialnetworks.ILogin;
-import com.applications.frodo.socialnetworks.ILoginCallback;
-import com.applications.frodo.socialnetworks.LoginStatus;
 import com.applications.frodo.socialnetworks.facebook.LoginWithFacebook;
 import com.applications.frodo.utils.Convertors;
 import com.applications.frodo.views.home.ApplicationActivity;
@@ -26,6 +25,9 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 
 public class MainActivity extends FragmentActivity{
+
+    private static String TAG=MainActivity.class.toString();
+    private static String PREFS_NAME="FrodosFile";
 
     private static final int LOGIN=0;
     private static final int SIGNUP=1;
@@ -52,7 +54,7 @@ public class MainActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initializeBackendParameters();
+        init();
         //printHashKey();
         uiHelper = new UiLifecycleHelper(this, callback);
         uiHelper.onCreate(savedInstanceState);
@@ -71,13 +73,15 @@ public class MainActivity extends FragmentActivity{
         transaction.commit();
     }
 
-    private void initializeBackendParameters(){
+    private void init(){
         BackendRequestParameters.getInstance().setIp(getResources().getString(R.string.host_ip));
         BackendRequestParameters.getInstance().setPort(Integer.parseInt(getResources().getString(R.string.host_port)));
         BackendRequestParameters.getInstance().setGetUserDataQuery(getResources().getString(R.string.user_data_query));
         BackendRequestParameters.getInstance().setSingupQuery(getResources().getString(R.string.signup_query));
         BackendRequestParameters.getInstance().setLoginQuery(getResources().getString(R.string.login_query));
         BackendRequestParameters.getInstance().setShouldSignupQuery(getResources().getString(R.string.should_signup_query));
+
+        PersistanceMap.getInstance().init(getSharedPreferences(PREFS_NAME,0));
 
     }
 
