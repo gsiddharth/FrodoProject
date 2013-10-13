@@ -71,7 +71,7 @@ public class ApplicationActivity extends FragmentActivity {
             Fragment fragment = null;
             switch(position){
                 case 0: return new MenuFragment();
-                case 1: return new MenuFragment();
+                case 1: return new EventPhotosFragment();
                 case 2: return new MenuFragment();
             }
             if(fragment!=null){

@@ -4,12 +4,14 @@ import android.graphics.Bitmap;
 
 import com.applications.frodo.networking.PictureDownloader;
 
+import org.json.JSONObject;
+
 import java.util.Calendar;
 
 /**
  * Created by siddharth on 09/10/13.
  */
-public class Event implements IEvent{
+public class Event extends IEvent{
 
     private String id;
     private String name;
@@ -79,6 +81,7 @@ public class Event implements IEvent{
 
     @Override
     public Calendar getStartTime() {
+        JSONObject l;
         return startTime;
     }
 
@@ -102,4 +105,6 @@ public class Event implements IEvent{
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
+
+
 }

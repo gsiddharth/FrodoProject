@@ -1,5 +1,7 @@
 package com.applications.frodo.socialnetworks.facebook;
 
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,6 +16,7 @@ import com.applications.frodo.utils.Convertors;
 import com.applications.frodo.utils.GeneralUtils;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
+import com.facebook.RequestAsyncTask;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.model.GraphObject;
@@ -23,10 +26,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by siddharth on 11/10/13.
@@ -171,5 +177,91 @@ public class FacebookEvents implements ISocialNetworkEvents{
             Log.e(TAG,"JSON Parse Exception, JSON="+eventJSONObject.toString(), e);
         }
         return null;
+    }
+
+    public void sharePhoto(Bitmap image, final FacebookCallbacks fbCallback){
+        Session session = Session.getActiveSession();
+
+        if (session != null) {
+
+            Bundle postParams = new Bundle();
+
+            byte[] data = null;
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            image.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+            data = baos.toByteArray();
+
+            postParams.putByteArray("source", data);
+
+            Request.Callback callback = new Request.Callback() {
+                public void onCompleted(Response response) {
+                    fbCallback.onPhotoShareComplete();
+                }
+            };
+
+            Request request = new Request(session, GlobalParameters.getInstance().getCheckedInEventID()+ "/photos", postParams,
+                    HttpMethod.POST, callback);
+
+            RequestAsyncTask task = new RequestAsyncTask(request);
+            task.execute();
+        }
+    }
+
+    public void checkForPermissions(){
+        Session.isPublishPermission("");
+    }
+
+    public interface FacebookCallbacks{
+        public void onPhotoShareComplete();
+
+        public void onEventPhotosDownloadComplete(Map<String, String> pictures);
+
+    }
+
+    public void getPhotosOfEvent(String eventId, final FacebookCallbacks eventPhotosCallback){
+        //RequestExecutor executor=new RequestExecutor(eventPhotosCallback);
+        //executor.execute(eventId);
+    }
+
+    private class RequestExecutor extends AsyncTask<String, Integer, Map<String, String>> {
+
+        private class Pair{
+            String thumbnail;
+            String picture;
+        }
+
+        private FacebookCallbacks eventPhotosCallback;
+
+        public RequestExecutor(FacebookCallbacks eventPhotosCallback){
+            this.eventPhotosCallback=eventPhotosCallback;
+        }
+
+        @Override
+        protected Map<String, String> doInBackground(String... params) {
+            Session session = Session.getActiveSession();
+
+            if (session != null) {
+
+                Request request = new Request(session, GlobalParameters.getInstance().getCheckedInEventID()+ "/photos", null,
+                        HttpMethod.GET);
+                Response response=request.executeAndWait();
+
+                List<GraphObject> photoObjects=response.getGraphObjectList();
+                Map<String, String> thumbnails=new HashMap<String, String>();
+                for(GraphObject photoObject:photoObjects){
+                    thumbnails.put(photoObject.getProperty("picture").toString(), photoObject.getProperty("source").toString());
+                }
+                return thumbnails;
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Map<String, String> result){
+            if(result!=null){
+                this.eventPhotosCallback.onEventPhotosDownloadComplete(result);
+            }
+        }
     }
 }

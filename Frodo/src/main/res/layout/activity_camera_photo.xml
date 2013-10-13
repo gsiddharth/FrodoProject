@@ -13,6 +13,7 @@
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:text="Event Name"
+            android:id="@+id/cameraPhotoCheckedInEventName"
             android:gravity="center"
             android:textColor="#ffffff"
             android:textStyle="bold">
@@ -23,11 +24,12 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="15">
+        android:layout_weight="30"
+        android:background="#000000">
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/cameraActivityPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/cameraPhotoPhoto"
             android:layout_gravity="center">
         </ImageView>
     </LinearLayout>
@@ -40,7 +42,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/manageMyEventsMenuButton"
+            android:id="@+id/cameraPhotoCameraButton"
             android:layout_weight="0.5"
             android:background="#d28a09"
             android:layout_margin="2px"
@@ -53,9 +55,9 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/manageMyEventsMenuButton"
+            android:id="@+id/cameraPhotoShareButton"
             android:layout_weight="0.5"
-            android:background="#0c3ec1"
+            android:background="#169000"
             android:layout_margin="2px"
             android:clickable="true"
             android:text="@string/camera_photo_share_icon_text"

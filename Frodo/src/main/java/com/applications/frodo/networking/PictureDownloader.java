@@ -17,17 +17,17 @@ public class PictureDownloader extends AsyncTask<String, Integer, Bitmap[]>{
 
     private static String TAG=PictureDownloader.class.toString();
 
-    private LruCache<String, Bitmap> cache;
+    private static final LruCache<String, Bitmap> cache=new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024/8)){
+        @Override
+        protected int sizeOf(String key, Bitmap bitmap){
+            return bitmap.getByteCount()/1024;
+        }
+    };
+
     private PictureDownloaderListener listener;
 
     public PictureDownloader(PictureDownloaderListener listener){
         this.listener=listener;
-        this.cache=new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024/8)){
-            @Override
-            protected int sizeOf(String key, Bitmap bitmap){
-                return bitmap.getByteCount()/1024;
-            }
-        };
     }
 
     @Override

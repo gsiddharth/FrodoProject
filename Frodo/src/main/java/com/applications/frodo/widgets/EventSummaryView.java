@@ -192,16 +192,12 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
 
 
     public void checkIn(){
-        try {
-            eventCheckinFragment.resetViewToNotCheckedIn();
-            PersistanceMap.getInstance().putString("checked_in_event",this.event.getId());
-            GlobalParameters.getInstance().setCheckedInEventID(this.event.getId());
-            this.leftPadding=SELECTED_LEFT_PADDING;
-            invalidate();
-            requestLayout();
-        } catch (PersistanceMap.PersistanceMapUninitializedException e) {
-            Log.e(TAG, "Persistance not initialized Exception", e);
-        }
+
+        eventCheckinFragment.resetViewToNotCheckedIn();
+        GlobalParameters.getInstance().setCheckedInEvent(this.event);
+        this.leftPadding=SELECTED_LEFT_PADDING;
+        invalidate();
+        requestLayout();
     }
 
 

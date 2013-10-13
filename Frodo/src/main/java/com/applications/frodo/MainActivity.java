@@ -55,7 +55,7 @@ public class MainActivity extends FragmentActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        //printHashKey();
+
         uiHelper = new UiLifecycleHelper(this, callback);
         uiHelper.onCreate(savedInstanceState);
 
@@ -74,6 +74,7 @@ public class MainActivity extends FragmentActivity{
     }
 
     private void init(){
+        GlobalParameters.getInstance().setRootDir(getBaseContext().getFilesDir().getAbsolutePath());
         BackendRequestParameters.getInstance().setIp(getResources().getString(R.string.host_ip));
         BackendRequestParameters.getInstance().setPort(Integer.parseInt(getResources().getString(R.string.host_port)));
         BackendRequestParameters.getInstance().setGetUserDataQuery(getResources().getString(R.string.user_data_query));
@@ -112,7 +113,10 @@ public class MainActivity extends FragmentActivity{
             if(GlobalParameters.getInstance().getUser()==null){
                 showFragment(LOADING,false);
             }else{
-                showFragment(SIGNUP, false);
+                Intent intent=new Intent(this, ApplicationActivity.class);
+                startActivity(intent);
+
+                //showFragment(SIGNUP, false);
             }
         } else {
             //non authenticated fragment
@@ -150,7 +154,8 @@ public class MainActivity extends FragmentActivity{
                     onFacebookLogin();
                     showFragment(LOADING,false);
                 } else{
-                    showFragment(SIGNUP, false);
+                    Intent intent=new Intent(this, ApplicationActivity.class);
+                    startActivity(intent);
                 }
             } else if (state.isClosed()) {
                 // If the session state is closed:
@@ -213,13 +218,13 @@ public class MainActivity extends FragmentActivity{
                                     });
                                 }
                                 else{*/
-                                    if(GlobalParameters.getInstance().getUser().getUsername()==null){
-                                        showFragment(SIGNUP,false);
-                                    }else{
-                                        Intent intent=new Intent(currentActivity, ApplicationActivity.class);
-                                        startActivity(intent);
+                                if(GlobalParameters.getInstance().getUser().getUsername()==null){
+                                    showFragment(SIGNUP,false);
+                                }else{
+                                    Intent intent=new Intent(currentActivity, ApplicationActivity.class);
+                                    startActivity(intent);
 
-                                    }
+                                }
                                 /*}*/
                             }
                         }
@@ -233,5 +238,4 @@ public class MainActivity extends FragmentActivity{
     public void onSignupButtonClick(View view) {
         ((SignupFragment) fragments[SIGNUP]).onSignupButtonClick(view);
     }
-
 }

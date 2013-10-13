@@ -1,8 +1,8 @@
 package com.applications.frodo;
-
-import android.content.res.Resources;
 import android.util.Log;
 
+import com.applications.frodo.blocks.Event;
+import com.applications.frodo.blocks.IEvent;
 import com.applications.frodo.blocks.IUser;
 import com.applications.frodo.db.PersistanceMap;
 
@@ -13,7 +13,10 @@ public class GlobalParameters {
     private static String TAG=GlobalParameters.class.toString();
     private static GlobalParameters ourInstance = new GlobalParameters();
     private IUser user;
-    private  String checkedInEventID;
+    private IEvent checkedInEvent;
+    private String rootDir;
+    private boolean hasAllFBWritePermissions;
+
     public static GlobalParameters getInstance() {
         return ourInstance;
     }
@@ -31,25 +34,55 @@ public class GlobalParameters {
         this.user=user;
     }
 
-    public void setCheckedInEventID(String checkedInEventID){
+    public void setCheckedInEvent(IEvent checkedInEvent){
         try {
-            PersistanceMap.getInstance().putString("checked_in_event",checkedInEventID);
+            PersistanceMap.getInstance().putString("checked_in_event", checkedInEvent.toJSON());
         } catch (PersistanceMap.PersistanceMapUninitializedException e) {
             Log.e(TAG, "", e);
         };
-
-        this.checkedInEventID=checkedInEventID;
+        this.checkedInEvent=checkedInEvent;
     }
 
     public String getCheckedInEventID(){
-        if(this.checkedInEventID==null || this.checkedInEventID.equals("")){
+        if(this.checkedInEvent==null ){
             try {
-                this.checkedInEventID= PersistanceMap.getInstance().getString("checked_in_event",null);
+                this.checkedInEvent= Event.getEvent(PersistanceMap.getInstance().getString("checked_in_event", null));
             } catch (PersistanceMap.PersistanceMapUninitializedException e) {
                 Log.e(TAG, "", e);
             }
         }
-        return this.checkedInEventID;
+        if(this.checkedInEvent!=null)
+            return this.checkedInEvent.getId();
+        else{
+            return "";
+        }
     }
 
+    public IEvent getCheckedInEvent(){
+        if(this.checkedInEvent==null ){
+            try {
+                this.checkedInEvent= Event.getEvent(PersistanceMap.getInstance().getString("checked_in_event", null));
+            } catch (PersistanceMap.PersistanceMapUninitializedException e) {
+                Log.e(TAG, "", e);
+            }
+        }
+        return this.checkedInEvent;
+    }
+
+    public String getRootDir() {
+        return rootDir;
+    }
+
+    public void setRootDir(String rootDir) {
+        System.out.println(rootDir);
+        this.rootDir = rootDir;
+    }
+
+    public boolean isHasAllFBWritePermissions() {
+        return hasAllFBWritePermissions;
+    }
+
+    public void setHasAllFBWritePermissions(boolean hasAllFBWritePermissions) {
+        this.hasAllFBWritePermissions = hasAllFBWritePermissions;
+    }
 }
