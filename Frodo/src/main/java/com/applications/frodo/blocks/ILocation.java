@@ -7,7 +7,7 @@ package com.applications.frodo.blocks;
  * Note that this interface is intended to be used with GraphObject.Factory
  * and not implemented directly.
  */
-public interface ILocation {
+public interface ILocation extends IJSONable{
 
     /**
      *

@@ -165,8 +165,12 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
     public void setEvent(IEvent event) {
         this.event = event;
 
-        if(GlobalParameters.getInstance().getCheckedInEventID().equals(event.getId())){
-            leftPadding=SELECTED_LEFT_PADDING;
+        IEvent checkedInEvent=GlobalParameters.getInstance().getCheckedInEvent();
+
+        if(checkedInEvent!=null){
+            if(checkedInEvent.getId()!=null && checkedInEvent.getId().equals(event.getId())){
+                leftPadding=SELECTED_LEFT_PADDING;
+            }
         }
 
         if(event.getImage()==null){

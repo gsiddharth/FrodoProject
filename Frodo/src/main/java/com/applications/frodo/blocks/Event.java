@@ -4,14 +4,17 @@ import android.graphics.Bitmap;
 
 import com.applications.frodo.networking.PictureDownloader;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by siddharth on 09/10/13.
  */
-public class Event extends IEvent{
+public class Event implements IEvent{
 
     private String id;
     private String name;
@@ -21,6 +24,12 @@ public class Event extends IEvent{
     private Bitmap image;
     private ILocation location;
     private String imagePath;
+
+    public Event(JSONObject json) throws JSONException {
+        this.id=json.getString("id");
+        this.name=json.getString("name");
+
+    }
 
     public Event(String id, String name, String summary, Calendar startTime, Calendar endTime,
                  String imagePath, ILocation location) {
@@ -106,5 +115,12 @@ public class Event extends IEvent{
         this.imagePath = imagePath;
     }
 
+    public JSONObject toJSON(){
+        Map<String, String> map=new HashMap<String, String>();
+        map.put("id", getId());
+        map.put("name", getName());
 
+        JSONObject obj=new JSONObject(map);
+        return obj;
+    }
 }

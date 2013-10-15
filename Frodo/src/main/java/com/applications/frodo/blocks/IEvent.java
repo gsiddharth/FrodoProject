@@ -2,71 +2,45 @@ package com.applications.frodo.blocks;
 
 import android.graphics.Bitmap;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by siddharth on 09/10/13.
  */
-public abstract class IEvent{
+public interface IEvent extends IJSONable{
 
-    public String toJSON(){
-        Map<String, String> map=new HashMap<String, String>();
-        map.put("id", getId());
-        map.put("name", getName());
-        JSONObject obj=new JSONObject(map);
-        return obj.toString();
+    public Calendar getStartTime();
 
-    }
+    public void setStartTime(Calendar startTime);
 
-    public static IEvent getEvent(String json){
-        try {
-            JSONObject obj=new JSONObject(json);
-            String id=obj.getString("id");
-            String name=obj.getString("name");
-            return new Event(id,name,null,null,null,null,null);
-        } catch (JSONException e) {
-            return null;
-        }
-    }
+    public Calendar getEndTime();
 
-    public abstract Calendar getStartTime();
+    public void setEndTime(Calendar endTime);
 
-    public abstract void setStartTime(Calendar startTime);
+    public String getName();
 
-    public abstract Calendar getEndTime();
+    public void setName(String name);
 
-    public abstract void setEndTime(Calendar endTime);
+    public String getId();
 
-    public abstract String getName();
+    public void setId(String id);
 
-    public abstract void setName(String name);
+    public Bitmap getImage();
 
-    public abstract String getId();
+    public void setImage(Bitmap image);
 
-    public abstract void setId(String id);
+    public String getImagePath();
 
-    public abstract Bitmap getImage();
+    public void setImagePath(String path);
 
-    public abstract void setImage(Bitmap image);
+    public String getSummary();
 
-    public abstract String getImagePath();
+    public void setSummary(String summary);
 
-    public abstract void setImagePath(String path);
+    public ILocation getLocation();
 
-    public abstract String getSummary();
-
-    public abstract void setSummary(String summary);
-
-    public abstract ILocation getLocation();
-
-    public abstract void setLocation(ILocation location);
+    public void setLocation(ILocation location);
 
 
     public static class EventComparator implements Comparator<IEvent> {

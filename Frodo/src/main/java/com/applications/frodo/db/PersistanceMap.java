@@ -1,7 +1,14 @@
 package com.applications.frodo.db;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
+import com.applications.frodo.blocks.IJSONable;
+
+import org.json.JSONObject;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,9 +30,11 @@ public class PersistanceMap {
     }
 
     public void init(SharedPreferences sharedPreferences){
-        if(sharedPreferences!=null){
-            this.sharedPreferences=sharedPreferences;
-            this.initialized=true;
+        if(this.sharedPreferences==null){
+            if(sharedPreferences!=null){
+                this.sharedPreferences=sharedPreferences;
+                this.initialized=true;
+            }
         }
     }
 
@@ -72,11 +81,27 @@ public class PersistanceMap {
         editor.commit();
     }
 
-    public void put(String key, boolean value) throws PersistanceMapUninitializedException {
+    public void putBoolean(String key, boolean value) throws PersistanceMapUninitializedException {
         if(!initialized)
             throw new PersistanceMapUninitializedException();
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(key, value);
+        editor.commit();
+    }
+
+    public void putJSON(String key, JSONObject obj) throws PersistanceMapUninitializedException {
+        if(!initialized)
+            throw new PersistanceMapUninitializedException();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, obj.toString());
+        editor.commit();
+    }
+
+    public void putObject(String key, IJSONable jsonableObject) throws PersistanceMapUninitializedException {
+        if(!initialized)
+            throw new PersistanceMapUninitializedException();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, jsonableObject.toJSON().toString());
         editor.commit();
     }
 
@@ -138,6 +163,49 @@ public class PersistanceMap {
         if(!initialized)
             throw new PersistanceMapUninitializedException();
         return sharedPreferences.getBoolean(key, defValue);
+    }
+
+    public JSONObject getJSON(String key, JSONObject defValue) throws PersistanceMapUninitializedException{
+        if(!initialized)
+            throw new PersistanceMapUninitializedException();
+        String res;
+        if(defValue==null){
+            res=sharedPreferences.getString(key, null);
+        }else{
+            res=sharedPreferences.getString(key, defValue.toString());
+        }
+
+        try{
+            return new JSONObject(res);
+        }catch(Exception e){
+            return defValue;
+        }
+    }
+
+    public IJSONable getObject(String key, IJSONable defaultValue, Class<?> clazz) throws PersistanceMapUninitializedException {
+        if(!initialized)
+            throw new PersistanceMapUninitializedException();
+
+        JSONObject obj;
+
+        if(defaultValue==null){
+            obj=getJSON(key, null);
+        }else{
+            obj=getJSON(key, defaultValue.toJSON());
+        }
+        try{
+            Object o=toClass(obj, clazz);
+            return (IJSONable) o;
+        }catch(Exception e){
+            Log.e(TAG, "", e);
+            return defaultValue;
+        }
+    }
+
+    public Object toClass(JSONObject jsonParams, Class<?> clazz) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        Constructor<?> constructor = clazz.getConstructor(JSONObject.class);
+        Object o = constructor.newInstance(jsonParams);
+        return o;
     }
 
     public boolean contains(String key) throws PersistanceMapUninitializedException {

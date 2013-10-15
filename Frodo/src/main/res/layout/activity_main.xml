@@ -12,12 +12,13 @@
         android:layout_height="match_parent"
         tools:layout="@layout/login" />
 
+    <!--
     <fragment android:name="com.applications.frodo.views.SignupFragment"
         android:id="@+id/signupFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/signup" />
-
+    -->
     <fragment android:name="com.applications.frodo.views.LoadingFragment"
         android:id="@+id/loadingFragment"
         android:layout_width="match_parent"

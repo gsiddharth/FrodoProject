@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/Frodo/build/exploded-bundles/FrodoProjectLibrariesFacebookUnspecified.aar/libs/android-support-v4.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$APPLICATION_HOME_DIR$/sdk/sources/android-18" />
+    </SOURCES>
   </library>
 </component>

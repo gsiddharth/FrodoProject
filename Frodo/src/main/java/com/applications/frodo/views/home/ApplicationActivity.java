@@ -103,4 +103,12 @@ public class ApplicationActivity extends FragmentActivity {
         }
     }
 
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        finish();
+        System.exit(0);
+
+    }
+
 }

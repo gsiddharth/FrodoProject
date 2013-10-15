@@ -1,5 +1,11 @@
 package com.applications.frodo.blocks;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by siddharth on 26/09/13.
  */
@@ -13,6 +19,21 @@ public class Location implements ILocation {
     private String zip;
     private double latitude;
     private double longitude;
+
+    public Location(){
+
+    }
+
+    public Location(JSONObject jsonParams) throws JSONException {
+        this.name=jsonParams.getString("name");
+        this.street=jsonParams.getString("street");
+        this.city=jsonParams.getString("city");
+        this.state=jsonParams.getString("state");
+        this.country=jsonParams.getString("country");
+        this.zip=jsonParams.getString("zip");
+        this.latitude=jsonParams.getDouble("latitude");
+        this.longitude=jsonParams.getDouble("longitude");
+    }
 
     @Override
     public String getStreet() {
@@ -92,5 +113,23 @@ public class Location implements ILocation {
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public JSONObject toJSON() {
+
+        Map<String, Object> map=new HashMap<String, Object>();
+
+        map.put("name", this.name);
+        map.put("street", this.street);
+        map.put("city",this.city);
+        map.put("state", this.state);
+        map.put("country",this.country);
+        map.put("zip",this.zip);
+        map.put("latitude",this.latitude);
+        map.put("longitude",this.longitude);
+
+        return new JSONObject(map);
+
     }
 }

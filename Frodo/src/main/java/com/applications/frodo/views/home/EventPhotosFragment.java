@@ -1,5 +1,7 @@
 package com.applications.frodo.views.home;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,9 +12,13 @@ import android.widget.GridView;
 
 import com.applications.frodo.GlobalParameters;
 import com.applications.frodo.R;
+import com.applications.frodo.blocks.IEvent;
 import com.applications.frodo.networking.PictureDownloader;
 import com.applications.frodo.socialnetworks.facebook.FacebookEvents;
+import com.applications.frodo.widgets.ImageAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,26 +33,36 @@ public class EventPhotosFragment  extends Fragment{
 
         final GridView eventPhotoGridView=(GridView) rootView.findViewById(R.id.eventPhotoGridView);
 
-        FacebookEvents.getInstance().getPhotosOfEvent(GlobalParameters.getInstance().getCheckedInEventID(),new FacebookEvents.FacebookCallbacks() {
-            @Override
-            public void onEventPhotosDownloadComplete(Map<String, String> pictures) {
-                for(String thumbnail: pictures.keySet()){
-                    PictureDownloader downloader=new PictureDownloader(new PictureDownloader.PictureDownloaderListener() {
-                        @Override
-                        public void onPictureDownload(Bitmap bitmap) {
+        IEvent event=GlobalParameters.getInstance().getCheckedInEvent();
 
-                        }
-                    });
+        final Context context=this.getActivity().getBaseContext();
+
+        System.out.println(event);
+
+        if(event!=null && event.getId()!=null){
+
+            FacebookEvents.getInstance().getPhotosOfEvent(event.getId(),new FacebookEvents.FacebookCallbacks() {
+                @Override
+                public void onEventPhotosDownloadComplete(Map<String, String> pictures) {
+                    List<String> thumbnails=new ArrayList<String>();
+                    List<String> images=new ArrayList<String>();
+
+                    for(Map.Entry<String, String> entry:pictures.entrySet()){
+                        thumbnails.add(entry.getKey());
+                        images.add(entry.getKey());
+                    }
+
+                    eventPhotoGridView.setAdapter(new ImageAdapter(context,thumbnails, images));
+
                 }
 
-            }
-
-            @Override
-            public void onPhotoShareComplete() {
-            }
+                @Override
+                public void onPhotoShareComplete() {
+                }
 
 
-        });
+            });
+        }
 
         return rootView;
     }

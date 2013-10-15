@@ -1,5 +1,11 @@
 package com.applications.frodo.blocks;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by siddharth on 26/09/13.
  */
@@ -15,6 +21,23 @@ public class User implements IUser {
     private String username;
     private String link;
     private ILocation location;
+
+    public User(){
+
+    }
+
+    public User(JSONObject jsonParams) throws JSONException {
+        this.id=jsonParams.getString("id");
+        this.facebookid=jsonParams.getString("facebookid");
+        this.name=jsonParams.getString("name");
+        this.firstName=jsonParams.getString("firstname");
+        this.middleName=jsonParams.getString("middlename");
+        this.lastName=jsonParams.getString("lastname");
+        this.birthday=jsonParams.getString("birthday");
+        this.username=jsonParams.getString("username");
+        this.link=jsonParams.getString("link");
+        this.location=new Location(jsonParams.getJSONObject("location"));
+    }
 
     @Override
     public String getId() {
@@ -115,4 +138,24 @@ public class User implements IUser {
     public void setLocation(ILocation location) {
         this.location=location;
     }
+
+    @Override
+    public JSONObject toJSON() {
+
+        Map<String, Object> map=new HashMap<String, Object>();
+
+        map.put("id", this.getId());
+        map.put("facebookid", this.getFacebookId());
+        map.put("name", this.getName());
+        map.put("firstname", this.getName());
+        map.put("middlename", this.getMiddleName());
+        map.put("lastname", this.getLastName());
+        map.put("birthday", this.getBirthday());
+        map.put("username", this.getUsername());
+        map.put("link", this.getLink());
+        map.put("location", this.getLocation().toJSON());
+        return new JSONObject(map);
+    }
+
+
 }

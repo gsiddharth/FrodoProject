@@ -3,7 +3,7 @@ package com.applications.frodo.blocks;
 /**
  * Created by siddharth on 26/09/13.
  */
-public interface IUser {
+public interface IUser extends IJSONable{
 
     /**
      * Returns the ID of the user.

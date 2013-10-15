@@ -186,7 +186,7 @@ public class FacebookEvents implements ISocialNetworkEvents{
 
             Bundle postParams = new Bundle();
 
-            byte[] data = null;
+            byte[] data;
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             image.compress(Bitmap.CompressFormat.JPEG, 20, baos);
             data = baos.toByteArray();
@@ -199,11 +199,14 @@ public class FacebookEvents implements ISocialNetworkEvents{
                 }
             };
 
-            Request request = new Request(session, GlobalParameters.getInstance().getCheckedInEventID()+ "/photos", postParams,
-                    HttpMethod.POST, callback);
+            IEvent checkedInEvent=GlobalParameters.getInstance().getCheckedInEvent();
+            if(checkedInEvent!=null && checkedInEvent.getId()!=null){
+                Request request = new Request(session, checkedInEvent.getId()+ "/photos", postParams,
+                        HttpMethod.POST, callback);
 
-            RequestAsyncTask task = new RequestAsyncTask(request);
-            task.execute();
+                RequestAsyncTask task = new RequestAsyncTask(request);
+                task.execute();
+            }
         }
     }
 
@@ -219,8 +222,9 @@ public class FacebookEvents implements ISocialNetworkEvents{
     }
 
     public void getPhotosOfEvent(String eventId, final FacebookCallbacks eventPhotosCallback){
-        //RequestExecutor executor=new RequestExecutor(eventPhotosCallback);
-        //executor.execute(eventId);
+        RequestExecutor executor=new RequestExecutor(eventPhotosCallback);
+        System.out.println("Getting photos... for thv  e event "+eventId);
+        executor.execute(eventId);
     }
 
     private class RequestExecutor extends AsyncTask<String, Integer, Map<String, String>> {
@@ -242,16 +246,44 @@ public class FacebookEvents implements ISocialNetworkEvents{
 
             if (session != null) {
 
-                Request request = new Request(session, GlobalParameters.getInstance().getCheckedInEventID()+ "/photos", null,
-                        HttpMethod.GET);
-                Response response=request.executeAndWait();
+                IEvent checkedInEvent=GlobalParameters.getInstance().getCheckedInEvent();
 
-                List<GraphObject> photoObjects=response.getGraphObjectList();
-                Map<String, String> thumbnails=new HashMap<String, String>();
-                for(GraphObject photoObject:photoObjects){
-                    thumbnails.put(photoObject.getProperty("picture").toString(), photoObject.getProperty("source").toString());
+                if(checkedInEvent!=null && checkedInEvent.getId()!=null){
+                    Request request = new Request(session, checkedInEvent.getId()+ "/photos", null,
+                            HttpMethod.GET);
+
+                    System.out.println("Getting photos... for the event "+checkedInEvent.getId());
+
+                    Response response=request.executeAndWait();
+
+                    System.out.println(response);
+
+                    GraphObject graphObject=response.getGraphObject();
+                    JSONObject json=graphObject.getInnerJSONObject();
+                    Map<String, String> images=new HashMap<String, String>();
+                    try {
+                        JSONArray photoArray=json.getJSONArray("data");
+                        for(int i=0;i<photoArray.length();i++){
+                            JSONObject obj=photoArray.getJSONObject(i);
+                            JSONArray arr=obj.getJSONArray("images");
+                            String thum="";
+                            String image="";
+                            thum=arr.getJSONObject(arr.length()-5).getString("source");
+                            image=arr.getJSONObject(arr.length()-7).getString("source");
+                            images.put(thum,image);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    /*for(GraphObject photoObject:photoObjects){
+                        thumbnails.put(photoObject.getProperty("picture").toString(), photoObject.getProperty("source").toString());
+                    }*/
+                    return images;
                 }
-                return thumbnails;
+
+                return null;
             }
 
             return null;
