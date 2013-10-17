@@ -42,6 +42,7 @@ public class PictureDownloader extends AsyncTask<String, Integer, Bitmap[]>{
                         URL url=new URL(urlstr);
                         InputStream in=new BufferedInputStream(url.openStream());
                         bitmap= BitmapFactory.decodeStream(in);
+                        cache.put(urlstr,bitmap);
                     }
 
                     bitmaps[i]=bitmap;

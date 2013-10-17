@@ -57,7 +57,6 @@ public class EventCheckinFragment  extends Fragment {
         EventSummaryView.EventSummaryListAdaptor eventAdaptor=new EventSummaryView.EventSummaryListAdaptor(events,this.getActivity().getBaseContext(), this);
         eventListView= (ListView) this.getActivity().findViewById(R.id.eventListView);
         eventListView.setAdapter(eventAdaptor);
-
     }
 
     public void resetViewToNotCheckedIn(){

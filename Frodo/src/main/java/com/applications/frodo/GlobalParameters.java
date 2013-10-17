@@ -73,6 +73,8 @@ public class GlobalParameters {
                 Log.i(TAG,"got check in event "+this.checkedInEvent.getId());
             } catch (PersistanceMap.PersistanceMapUninitializedException e) {
                 Log.e(TAG, "PersistanceMap not Inititalized", e);
+            }catch(NullPointerException e){
+                Log.e(TAG, "Null pointer exception", e);
             }
         }
         return this.checkedInEvent;

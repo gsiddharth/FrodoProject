@@ -12,7 +12,7 @@
 
     <!-- Facebook configuration -->
     <string name="facebook_app_id">584696474923426</string>
-    <string name="facebook_read_permissions">user_events, user_about_me, user_photos, email</string>
+    <string name="facebook_read_permissions">user_events, user_about_me, user_photos, email, user_friends</string>
     <string name="facebook_write_permissions">publish_stream</string>
 
     <!-- Backend Configuration -->
@@ -33,15 +33,18 @@
     <string name="photos_icon_text">Photos</string>
     <string name="title_activity_application">Frodo</string>
     <string name="title_section1">Menu</string>
-    <string name="title_section2">Check In</string>
-    <string name="title_section3">Event Phots</string>
+    <string name="title_section2">All Pics</string>
+    <string name="title_section3">My Network Pics</string>
+    <string name="title_section4">My Pics</string>
+    <string name="title_section5">Explore</string>
     <string name="upload_icon_text">Upload</string>
     <string name="title_activity_checkin">Check In</string>
     <string name="checkin_title_section1">Events</string>
     <string name="possible_date_formats">yyyy-MM-dd\'T\'HH:mm:ssZ||||yyyy-MM-dd</string>
     <string name="title_activity_camera_photo">Frodo</string>
-
     <string name="camera_photo_camera_icon_text">Camera</string>
     <string name="camera_photo_share_icon_text">Share</string>
+    <string name="title_activity_photo_detail">Pics</string>
+    <string name="title_activity_photo_details">Pics</string>
 
 </resources>

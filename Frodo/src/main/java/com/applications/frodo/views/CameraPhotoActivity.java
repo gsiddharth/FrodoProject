@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.applications.frodo.GlobalParameters;
 import com.applications.frodo.R;
+import com.applications.frodo.blocks.IPhoto;
 import com.applications.frodo.socialnetworks.facebook.FacebookEvents;
 import com.applications.frodo.socialnetworks.facebook.FacebookPermissions;
 import com.applications.frodo.utils.FileStorage;
@@ -104,7 +105,7 @@ public class CameraPhotoActivity extends Activity {
                 }
 
                 @Override
-                public void onEventPhotosDownloadComplete(Map<String,String> map) {
+                public void onEventPhotosDownloadComplete(List<IPhoto> photos) {
                 }
             });
         }

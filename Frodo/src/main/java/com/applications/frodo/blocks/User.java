@@ -21,6 +21,7 @@ public class User implements IUser {
     private String username;
     private String link;
     private ILocation location;
+    private Map<String, IUser> friends;
 
     public User(){
 
@@ -158,4 +159,13 @@ public class User implements IUser {
     }
 
 
+    @Override
+    public Map<String, IUser> getFriends() {
+        return friends;
+    }
+
+    @Override
+    public void setFriends(Map<String, IUser> friends) {
+        this.friends = friends;
+    }
 }

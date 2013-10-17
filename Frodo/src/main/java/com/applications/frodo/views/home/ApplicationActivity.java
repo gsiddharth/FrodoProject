@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
 import com.applications.frodo.R;
+import com.applications.frodo.socialnetworks.facebook.FacebookEvents;
 
 public class ApplicationActivity extends FragmentActivity {
 
@@ -35,7 +36,6 @@ public class ApplicationActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_application);
 
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the app.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -44,6 +44,11 @@ public class ApplicationActivity extends FragmentActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        if(savedInstanceState!=null){
+            if(savedInstanceState.containsKey("current_view")){
+                mViewPager.setCurrentItem(savedInstanceState.getInt("current_view"));
+            }
+        }
     }
 
     @Override
@@ -53,6 +58,20 @@ public class ApplicationActivity extends FragmentActivity {
         return true;
     }
 
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        finish();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        if(outState!=null){
+            outState.putInt("current_view", mViewPager.getCurrentItem());
+        }
+    }
 
 
     /**
@@ -67,12 +86,15 @@ public class ApplicationActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            FragmentManager fm=getSupportFragmentManager();
             Fragment fragment = null;
             switch(position){
                 case 0: return new MenuFragment();
-                case 1: return new EventPhotosFragment();
-                case 2: return new MenuFragment();
+                case 1:
+                    return new EventPhotosFragment(FacebookEvents.EventPhotosOf.ALL);
+                case 2:
+                    return new EventPhotosFragment(FacebookEvents.EventPhotosOf.NETWORK);
+                case 3:
+                    return new EventPhotosFragment(FacebookEvents.EventPhotosOf.MY);
             }
             if(fragment!=null){
                 Bundle args = new Bundle();
@@ -84,8 +106,7 @@ public class ApplicationActivity extends FragmentActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -98,17 +119,10 @@ public class ApplicationActivity extends FragmentActivity {
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
+                case 3:
+                    return getString(R.string.title_section4).toUpperCase(l);
             }
             return null;
         }
     }
-
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
-        finish();
-        System.exit(0);
-
-    }
-
 }

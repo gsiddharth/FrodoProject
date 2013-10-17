@@ -9,6 +9,8 @@ import com.applications.frodo.GlobalParameters;
 import com.applications.frodo.blocks.Event;
 import com.applications.frodo.blocks.IEvent;
 import com.applications.frodo.blocks.ILocation;
+import com.applications.frodo.blocks.IPhoto;
+import com.applications.frodo.blocks.IUser;
 import com.applications.frodo.blocks.Location;
 import com.applications.frodo.socialnetworks.ISocialNetworkEvents;
 import com.applications.frodo.utils.Convertors;
@@ -217,70 +219,59 @@ public class FacebookEvents implements ISocialNetworkEvents{
     public interface FacebookCallbacks{
         public void onPhotoShareComplete();
 
-        public void onEventPhotosDownloadComplete(Map<String, String> pictures);
+        public void onEventPhotosDownloadComplete(List<IPhoto> photos);
 
     }
 
-    public void getPhotosOfEvent(String eventId, final FacebookCallbacks eventPhotosCallback){
-        RequestExecutor executor=new RequestExecutor(eventPhotosCallback);
-        System.out.println("Getting photos... for thv  e event "+eventId);
+    public void getAllPhotosOfEvent(String eventId, final FacebookCallbacks eventPhotosCallback){
+        RequestExecutor executor=new RequestExecutor(eventPhotosCallback, EventPhotosOf.ALL);
         executor.execute(eventId);
     }
 
-    private class RequestExecutor extends AsyncTask<String, Integer, Map<String, String>> {
+    public void getMyPhotosOfEvent(String eventId, final FacebookCallbacks eventPhotosCallback){
+        RequestExecutor executor=new RequestExecutor(eventPhotosCallback,EventPhotosOf.MY);
+        executor.execute(eventId);
+    }
 
-        private class Pair{
-            String thumbnail;
-            String picture;
-        }
+    public void getMyNetworkPhotosOfEvent(String eventId, final FacebookCallbacks eventPhotosCallback){
+        RequestExecutor executor=new RequestExecutor(eventPhotosCallback,EventPhotosOf.MY);
+        executor.execute(eventId);
+    }
+
+    private class RequestExecutor extends AsyncTask<String, Integer, List<IPhoto>> {
 
         private FacebookCallbacks eventPhotosCallback;
+        private EventPhotosOf who;
 
-        public RequestExecutor(FacebookCallbacks eventPhotosCallback){
+        public RequestExecutor(FacebookCallbacks eventPhotosCallback, EventPhotosOf who){
+            this.who=who;
             this.eventPhotosCallback=eventPhotosCallback;
         }
 
         @Override
-        protected Map<String, String> doInBackground(String... params) {
+        protected List<IPhoto> doInBackground(String... params) {
             Session session = Session.getActiveSession();
 
-            if (session != null) {
+            if (session != null && params.length>0) {
 
-                IEvent checkedInEvent=GlobalParameters.getInstance().getCheckedInEvent();
+                String eventID=params[0];
 
-                if(checkedInEvent!=null && checkedInEvent.getId()!=null){
-                    Request request = new Request(session, checkedInEvent.getId()+ "/photos", null,
+                if(eventID!=null ){
+                    Request request = new Request(session, eventID+ "/photos", null,
                             HttpMethod.GET);
-
-                    System.out.println("Getting photos... for the event "+checkedInEvent.getId());
 
                     Response response=request.executeAndWait();
 
-                    System.out.println(response);
-
                     GraphObject graphObject=response.getGraphObject();
-                    JSONObject json=graphObject.getInnerJSONObject();
-                    Map<String, String> images=new HashMap<String, String>();
-                    try {
-                        JSONArray photoArray=json.getJSONArray("data");
-                        for(int i=0;i<photoArray.length();i++){
-                            JSONObject obj=photoArray.getJSONObject(i);
-                            JSONArray arr=obj.getJSONArray("images");
-                            String thum="";
-                            String image="";
-                            thum=arr.getJSONObject(arr.length()-5).getString("source");
-                            image=arr.getJSONObject(arr.length()-7).getString("source");
-                            images.put(thum,image);
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    try{
+                        List<IPhoto> images=Convertors.convertToPhotos(graphObject);
+                        images=filter(images, who);
+                        return images;
+                    }catch(Exception e){
+                        Log.e(TAG,"",e);
                     }
 
-                    /*for(GraphObject photoObject:photoObjects){
-                        thumbnails.put(photoObject.getProperty("picture").toString(), photoObject.getProperty("source").toString());
-                    }*/
-                    return images;
+                    return null;
                 }
 
                 return null;
@@ -289,11 +280,45 @@ public class FacebookEvents implements ISocialNetworkEvents{
             return null;
         }
 
-        @Override
-        protected void onPostExecute(Map<String, String> result){
-            if(result!=null){
-                this.eventPhotosCallback.onEventPhotosDownloadComplete(result);
+        private List<IPhoto> filter(List<IPhoto> photos, EventPhotosOf who ){
+            switch(who){
+                case MY:
+                    IUser user=GlobalParameters.getInstance().getUser();
+                    List<IPhoto> newList=new ArrayList<IPhoto>();
+                    for(IPhoto photo:photos){
+                        if(photo.getUserId().equals(user.getId())){
+                            newList.add(photo);
+                        }
+                    }
+                    return newList;
+                case NETWORK:
+                    user=GlobalParameters.getInstance().getUser();
+                    Map<String, IUser> friends=user.getFriends();
+                    newList=new ArrayList<IPhoto>();
+                    for(IPhoto photo:photos){
+                        if(friends.containsKey(photo.getUserId()) || photo.getUserId().equals(user.getId())){
+                            newList.add(photo);
+                        }
+                    }
+                    return newList;
+
+                case ALL:
+                    return photos;
+                default:
+                    return photos;
             }
         }
+
+        @Override
+        protected void onPostExecute(List<IPhoto> photos){
+            if(photos!=null){
+                this.eventPhotosCallback.onEventPhotosDownloadComplete(photos);
+            }
+        }
+    }
+
+
+    public enum EventPhotosOf{
+        MY, NETWORK, ALL
     }
 }

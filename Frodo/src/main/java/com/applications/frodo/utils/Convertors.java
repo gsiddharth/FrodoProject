@@ -3,16 +3,22 @@ package com.applications.frodo.utils;
 import android.util.Log;
 
 import com.applications.frodo.blocks.ILocation;
+import com.applications.frodo.blocks.IPhoto;
+import com.applications.frodo.blocks.IPhotoSource;
 import com.applications.frodo.blocks.IUser;
 import com.applications.frodo.blocks.Location;
+import com.applications.frodo.blocks.Photo;
 import com.applications.frodo.blocks.SocialNetworks;
 import com.applications.frodo.blocks.User;
 import com.facebook.model.GraphLocation;
+import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -20,9 +26,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by siddharth on 26/09/13.
@@ -72,23 +82,57 @@ public class Convertors {
         return location;
     }
 
+    public static List<IPhoto> convertToPhotos(GraphObject photosObject) throws JSONException {
+        List<IPhoto> photos=new ArrayList<IPhoto>();
+        JSONObject outerJson=photosObject.getInnerJSONObject();
+        JSONArray photosArray=outerJson.getJSONArray("data");
+
+        for(int j=0;j<photosArray.length();j++){
+
+            JSONObject json=photosArray.getJSONObject(j);
+            String imageId=json.getString("id");
+            JSONObject user=json.getJSONObject("from");
+            if(user!=null){
+                String userId=user.getString("id");
+                String username=user.getString("name");
+
+                List<IPhotoSource> sources=new ArrayList<IPhotoSource>();
+                JSONArray sourceArray=json.getJSONArray("images");
+                for(int i=0;i<sourceArray.length();i++){
+                    JSONObject sourceObj=sourceArray.getJSONObject(i);
+                    String sourceURL=sourceObj.getString("source");
+                    int width=sourceObj.getInt("width");
+                    int height=sourceObj.getInt("height");
+                    sources.add(new Photo.PhotoSource(sourceURL,width,height));
+                }
+
+                IPhoto photo=new Photo(imageId,sources,userId,username);
+                photo.setThumbnail(sources.get(3));
+                photo.setImage(sources.get(2));
+                photos.add(photo);
+            }
+        }
+
+        return photos;
+    }
+
     public static ILocation convertToLocation(JSONObject jsonObject, SocialNetworks socialnet, String name){
 
         if(socialnet==SocialNetworks.FACEBOOK){
             try{
                 ILocation location = new Location();
                 if(!jsonObject.isNull("latitude")){
-                String latitude=jsonObject.getString("latitude");
-                if(StringUtils.isNumeric(latitude)){
-                    location.setLatitude(Double.parseDouble(latitude));
-                }
+                    String latitude=jsonObject.getString("latitude");
+                    if(StringUtils.isNumeric(latitude)){
+                        location.setLatitude(Double.parseDouble(latitude));
+                    }
                 }
 
                 if(!jsonObject.isNull("longitude")){
-                String longitude=jsonObject.getString("longitude");
-                if(StringUtils.isNumeric(longitude)){
-                    location.setLongitude(Double.parseDouble(longitude));
-                }
+                    String longitude=jsonObject.getString("longitude");
+                    if(StringUtils.isNumeric(longitude)){
+                        location.setLongitude(Double.parseDouble(longitude));
+                    }
                 }
 
                 if(!jsonObject.isNull("state"))

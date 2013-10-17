@@ -5,11 +5,28 @@
     android:orientation="vertical"
     android:background="#ffffff" >
 
-
-    <GridView
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
+        android:background="#000000">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:text="Event Name"
+            android:id="@+id/cameraPhotoCheckedInEventName"
+            android:gravity="center"
+            android:textColor="#ffffff"
+            android:textStyle="bold">
+
+        </TextView>
+    </LinearLayout>
+
+    <com.handmark.pulltorefresh.library.PullToRefreshGridView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:id="@+id/eventPhotoGridView"
         android:numColumns="2"
-        android:clickable="true"/>
+        android:clickable="true"
+        ptr:ptrMode="pullDownFromTop"/>
 </LinearLayout>

@@ -1,5 +1,7 @@
 package com.applications.frodo.blocks;
 
+import java.util.Map;
+
 /**
  * Created by siddharth on 26/09/13.
  */
@@ -118,5 +120,9 @@ public interface IUser extends IJSONable{
      * @param location the current city of the user
      */
     public void setLocation(ILocation location);
+
+    public Map<String, IUser> getFriends();
+
+    public void setFriends(Map<String, IUser> friends);
 
 }

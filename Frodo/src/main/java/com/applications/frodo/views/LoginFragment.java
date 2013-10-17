@@ -135,8 +135,8 @@ public class LoginFragment extends Fragment{
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
         uiHelper.onDestroy();
+        super.onDestroy();
     }
 
     @Override

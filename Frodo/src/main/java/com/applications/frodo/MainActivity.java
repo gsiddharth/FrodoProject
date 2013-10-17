@@ -108,15 +108,13 @@ public class MainActivity extends FragmentActivity{
     public synchronized void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         fragments[LOGIN].onActivityResult(requestCode,resultCode,data);
-
     }
 
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        System.out.println("destroying...");
         fragments[LOGIN].onDestroy();
+        super.onDestroy();
     }
 
     @Override
