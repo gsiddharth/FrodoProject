@@ -37,10 +37,12 @@ public class ImageAdapter extends BaseAdapter {
     private int imagePadding=8;
     private static int staticID=1;
     private int id;
+    private int numOfColumns;
 
-    public ImageAdapter(Activity activity, Context c, List<IPhoto> photos) {
+    public ImageAdapter(Activity activity, Context c, List<IPhoto> photos, int numOfColumns) {
         this.activity=activity;
         this.mContext = c;
+        this.numOfColumns=numOfColumns;
         this.views=new ArrayList<View>();
         for(int i=0;i<photos.size();i++){
             this.views.add(null);
@@ -48,8 +50,8 @@ public class ImageAdapter extends BaseAdapter {
 
         width= GlobalParameters.getInstance().getScreenWidth(mContext);
         height= GlobalParameters.getInstance().getScreenHeight(mContext);
-        width=width/2-imagePadding*2;
-        height=height/2-imagePadding*2-100;
+        width=width/numOfColumns-imagePadding;
+        height=width;
         this.photos=photos;
         this.id=staticID++;
     }
@@ -65,6 +67,7 @@ public class ImageAdapter extends BaseAdapter {
         for(View v:views){
             if(v!=null){
                 v.setId(v.getId()+1);
+                v.setOnClickListener(new ImageViewClickListener(v.getId()+1));
             }
         }
         this.photos.add(0,photo);
@@ -110,36 +113,20 @@ public class ImageAdapter extends BaseAdapter {
                 imageView = new ImageView(mContext);
                 imageView.setLayoutParams(new GridView.LayoutParams(width, height));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                imageView.setPadding(imagePadding,imagePadding,imagePadding,imagePadding);
+                imageView.setPadding(imagePadding/2,imagePadding/2,imagePadding/2,imagePadding/2);
                 imageView.setId(position);
 
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(activity, PhotoDetailsActivity.class);
-                        intent.putStringArrayListExtra("images", toImageURLList(photos));
-                        intent.putExtra("current_image_position", position);
-                        activity.startActivity(intent);
-                    }
-
-                    private ArrayList<String> toImageURLList(List<IPhoto> photos){
-                        ArrayList<String> urls=new ArrayList<String>();
-                        for(IPhoto photo:photos){
-                            urls.add(photo.getImage().getURL());
-                        }
-                        return urls;
-                    }
-                });
+                imageView.setOnClickListener(new ImageViewClickListener(position));
 
                 PictureDownloader downloader=new PictureDownloader(new PictureDownloader.PictureDownloaderListener() {
                     @Override
                     public void onPictureDownload(Bitmap bitmap) {
                         if(bitmap.getWidth()/(double) bitmap.getHeight()>width/(double) height){
                             bitmap=Bitmap.createScaledBitmap(bitmap,(int)(bitmap.getWidth()*height/(double) bitmap.getHeight()), height,false);
-                            bitmap=Bitmap.createBitmap(bitmap,(bitmap.getWidth()-width)/2,0,width,height);
+                            bitmap=Bitmap.createBitmap(bitmap,(bitmap.getWidth()-width)/numOfColumns,0,width,height);
                         }else{
                             bitmap=Bitmap.createScaledBitmap(bitmap,width, (int)(bitmap.getHeight()*width/(double) bitmap.getWidth()),false);
-                            bitmap=Bitmap.createBitmap(bitmap,0,(bitmap.getHeight()-height)/2,width,height);
+                            bitmap=Bitmap.createBitmap(bitmap,0,(bitmap.getHeight()-height)/numOfColumns,width,height);
                         }
 
                         bitmap= Bitmap.createScaledBitmap(bitmap,Math.min(width,bitmap.getWidth()),height,false);
@@ -162,11 +149,11 @@ public class ImageAdapter extends BaseAdapter {
     public static class ImageAdapterFactory{
         private static Map<Integer, ImageAdapter> adaptors=new HashMap<Integer, ImageAdapter>();
 
-        public static ImageAdapter getAdapter(Activity activity, Context c, List<IPhoto> photos, int id){
+        public static ImageAdapter getAdapter(Activity activity, Context c, List<IPhoto> photos, int numOfColumns, int id){
             if(adaptors.containsKey(id)){
                 return adaptors.get(id);
             }else{
-                ImageAdapter adapter=new ImageAdapter(activity,c,photos);
+                ImageAdapter adapter=new ImageAdapter(activity,c,photos, numOfColumns);
                 adaptors.put(adapter.getID(),adapter);
                 return adapter;
             }
@@ -178,6 +165,31 @@ public class ImageAdapter extends BaseAdapter {
             }else{
                 return null;
             }
+        }
+    }
+
+    private class ImageViewClickListener implements View.OnClickListener {
+
+        private int position;
+
+        public ImageViewClickListener(int position){
+            this.position=position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent=new Intent(activity, PhotoDetailsActivity.class);
+            intent.putStringArrayListExtra("images", toImageURLList(photos));
+            intent.putExtra("current_image_position", position);
+            activity.startActivity(intent);
+        }
+
+        private ArrayList<String> toImageURLList(List<IPhoto> photos){
+            ArrayList<String> urls=new ArrayList<String>();
+            for(IPhoto photo:photos){
+                urls.add(photo.getImage().getURL());
+            }
+            return urls;
         }
     }
 }

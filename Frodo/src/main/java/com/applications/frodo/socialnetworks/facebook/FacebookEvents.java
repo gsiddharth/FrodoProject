@@ -54,10 +54,11 @@ public class FacebookEvents implements ISocialNetworkEvents{
 
     @Override
     public void getEvents(final Callback callback) {
-        String fqlQuery = "SELECT name, description, start_time, end_time, eid, venue, location, pic " +
+        String fqlQuery = "SELECT name, description, start_time, end_time, eid, venue, location, pic_cover, pic_square " +
                 "from event WHERE eid in (SELECT eid FROM event_member WHERE uid = "
                 + GlobalParameters.getInstance().getUser().getFacebookId()+ " and (rsvp_status = " +
-                "'attending' or rsvp_status='unsure')) and start_time >='"+ GeneralUtils.getYesterdayDate()+"'";
+                "'attending' or rsvp_status='unsure')) and (start_time >='"+ GeneralUtils.getYesterdayDate()+
+                "' or end_time >='"+GeneralUtils.getYesterdayDate()+"')";
 
         Bundle params = new Bundle();
         params.putString("q", fqlQuery);
@@ -111,8 +112,13 @@ public class FacebookEvents implements ISocialNetworkEvents{
                         String eventSummary="";
                         if(!eventJSONOject.isNull("description")) eventSummary=eventJSONOject.getString("description");
 
+                        String icon=null;
+                        if(!eventJSONOject.isNull("pic_square")) icon= eventJSONOject.getString("pic_square");
+
                         String image=null;
-                        if(!eventJSONOject.isNull("pic")) image= eventJSONOject.getString("pic");
+                        if(!eventJSONOject.isNull("pic_cover")) {
+                            image= eventJSONOject.getJSONObject("pic_cover").getString("source");
+                        }
 
                         String locationName="";
                         if(!eventJSONOject.isNull("location")) locationName=eventJSONOject.getString("location");
@@ -120,7 +126,7 @@ public class FacebookEvents implements ISocialNetworkEvents{
                         ILocation location=null;
                         if(!eventJSONOject.isNull("venue")) location= convertToLocation(eventJSONOject.getJSONObject("venue"), locationName);
 
-                        events.add(new Event(eventId,eventName,eventSummary,eventStartTime,eventEndTime,image,location));
+                        events.add(new Event(eventId,eventName,eventSummary,eventStartTime,eventEndTime,icon, image,location));
 
                     }catch(JSONException e){
                         Log.e(TAG,"JSON => "+array.get(i).toString(),e);

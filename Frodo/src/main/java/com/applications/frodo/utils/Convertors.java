@@ -204,6 +204,7 @@ public class Convertors {
                 SimpleDateFormat fm=new SimpleDateFormat(format);
                 return fm.format(cal.getTime());
             }catch(Exception e){
+                Log.e(TAG,"Format tried to parse => "+format, e);
             }
         }
         return "";

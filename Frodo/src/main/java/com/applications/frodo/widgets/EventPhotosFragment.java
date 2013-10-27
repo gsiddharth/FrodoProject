@@ -1,4 +1,4 @@
-package com.applications.frodo.views.home;
+package com.applications.frodo.widgets;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import com.applications.frodo.R;
 import com.applications.frodo.blocks.IEvent;
 import com.applications.frodo.blocks.IPhoto;
 import com.applications.frodo.blocks.IUser;
+import com.applications.frodo.blocks.IEventFactory;
 import com.applications.frodo.socialnetworks.ISocialNetworkFriends;
 import com.applications.frodo.socialnetworks.facebook.FacebookEvents;
 import com.applications.frodo.socialnetworks.facebook.FacebookUserFriends;
@@ -29,11 +30,14 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ * This fragment is used to view the pics of the users. This fragment contains a PullToRefreshGridView.
+ * This fragment shows content specific to an event and fetches pics of the event based on the parameter "who<my, network, all>"
+ * If the event a user is checked in changes than a new
  * Created by siddharth on 12/10/13.
  */
 public class EventPhotosFragment  extends Fragment implements FacebookEvents.FacebookCallbacks, PullToRefreshBase.OnRefreshListener2<GridView>{
 
-    private IEvent event;
+    private IEventFactory factory;
     private PullToRefreshGridView eventPhotoGridView;
     private Context context;
     private FacebookEvents.EventPhotosOf who;
@@ -43,12 +47,15 @@ public class EventPhotosFragment  extends Fragment implements FacebookEvents.Fac
     private TextView nameView;
     private String eventID;
     private int imageAdaptorID=-1;
+    private int numOfColumns;
 
     public EventPhotosFragment(){
     }
 
-    public EventPhotosFragment(FacebookEvents.EventPhotosOf who){
+    public EventPhotosFragment(FacebookEvents.EventPhotosOf who, IEventFactory factory, int numOfColumns){
         this.who=who;
+        this.factory=factory;
+        this.numOfColumns=numOfColumns;
     }
 
 
@@ -70,28 +77,31 @@ public class EventPhotosFragment  extends Fragment implements FacebookEvents.Fac
             if(savedInstanceState.containsKey("imageAdapterID")){
                 this.imageAdaptorID= savedInstanceState.getInt("imageAdapterID");
             }
+
+            if(savedInstanceState.containsKey("factory")){
+                this.factory= savedInstanceState.getParcelable("factory");
+            }
+
+            if(savedInstanceState.containsKey("numOfColumns")){
+                this.numOfColumns=savedInstanceState.getInt("numOfColumns");
+            }
         }
 
-        this.eventPhotoGridView=(PullToRefreshGridView) rootView.findViewById(R.id.eventPhotoGridView);
         this.nameView=(TextView) rootView.findViewById(R.id.cameraPhotoCheckedInEventName);
-        this.event=GlobalParameters.getInstance().getCheckedInEvent();
-        this.context=this.getActivity().getBaseContext();
-        this.adapter= ImageAdapter.ImageAdapterFactory.getAdapter(this.getActivity(),context,photos,this.imageAdaptorID);
-        this.imageAdaptorID=this.adapter.getID();
+        this.eventPhotoGridView=(PullToRefreshGridView) rootView.findViewById(R.id.eventPhotoGridView);
+        this.eventPhotoGridView.getRefreshableView().setNumColumns(numOfColumns);
         setupGrid();
 
         return rootView;
     }
 
     private void setupGrid(){
-        eventPhotoGridView.getRefreshableView().setAdapter(adapter);
-        eventPhotoGridView.setOnRefreshListener(this);
+        this.context=this.getActivity().getBaseContext();
         setEmptyView();
         reset();
     }
 
     private void setEmptyView(){
-
         TextView tv = new TextView(getActivity());
         tv.setGravity(Gravity.CENTER);
         tv.setText("Empty View, Pull Down/Up to Add Items");
@@ -100,6 +110,7 @@ public class EventPhotosFragment  extends Fragment implements FacebookEvents.Fac
 
 
     private void downloadPhotoData(){
+        IEvent event=factory.getEvent();
         if(event!=null && event.getId()!=null){
 
             switch (who){
@@ -148,6 +159,7 @@ public class EventPhotosFragment  extends Fragment implements FacebookEvents.Fac
             adapter.notifyDataSetChanged();
         }
         eventPhotoGridView.onRefreshComplete();
+
         if(moreAdded){
             eventPhotoGridView.refreshDrawableState();
             eventPhotoGridView.getRefreshableView().invalidate();
@@ -160,17 +172,26 @@ public class EventPhotosFragment  extends Fragment implements FacebookEvents.Fac
     }
 
     private void reset(){
-        if(this.eventID==null || !this.eventID.equals(this.event.getId()) || this.event!=GlobalParameters.getInstance().getCheckedInEvent()){
-            adapter.reset();
-            imageSet.clear();
-            event=GlobalParameters.getInstance().getCheckedInEvent();
-            eventPhotoGridView.invalidate();
-            eventPhotoGridView.requestLayout();
-            downloadPhotoData();
-            setName();
-            this.eventID=this.event.getId();
-        }else{
-            setName();
+        IEvent event=factory.getEvent();
+        if(event!=null){
+            if(this.eventID==null || !this.eventID.equals(event.getId())){
+                photos.clear();
+                imageSet.clear();
+                this.adapter= ImageAdapter.ImageAdapterFactory.getAdapter(this.getActivity(),context,photos, numOfColumns,-1);
+                this.imageAdaptorID=this.adapter.getID();
+                eventPhotoGridView.getRefreshableView().setAdapter(adapter);
+                eventPhotoGridView.setOnRefreshListener(this);
+
+                downloadPhotoData();
+                setName();
+                this.eventID=event.getId();
+            }else{
+                this.adapter= ImageAdapter.ImageAdapterFactory.getAdapter(this.getActivity(),context,photos,numOfColumns,this.imageAdaptorID);
+                this.imageAdaptorID=this.adapter.getID();
+                eventPhotoGridView.getRefreshableView().setAdapter(adapter);
+                eventPhotoGridView.setOnRefreshListener(this);
+                setName();
+            }
         }
     }
 
@@ -184,16 +205,28 @@ public class EventPhotosFragment  extends Fragment implements FacebookEvents.Fac
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("who", this.who.toString());
+        if(this.who!=null)
+            outState.putString("who", this.who.toString());
+
         outState.putInt("imageAdaptorID", this.imageAdaptorID);
-        if(this.event!=null){
-            outState.putString("eventid", this.event.getId());
+        if(this.factory!=null){
+
+            IEvent event=factory.getEvent();
+            if(event!=null){
+                outState.putString("eventid", event.getId());
+            }
+
+            outState.putParcelable("factory", factory);
         }
+
+        outState.putInt("numOfColumns", numOfColumns);
+
     }
 
     private void setName(){
-        if(this.event!=null && this.event.getName()!=null){
-            this.nameView.setText(this.event.getName());
+        IEvent event=factory.getEvent();
+        if(event!=null && event.getName()!=null){
+            this.nameView.setText(event.getName());
         }
     }
 }

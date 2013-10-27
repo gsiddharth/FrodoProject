@@ -1,5 +1,9 @@
 package com.applications.frodo.blocks;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,6 +14,8 @@ import java.util.Map;
  * Created by siddharth on 26/09/13.
  */
 public class User implements IUser {
+
+    private static final String TAG=User.class.toString();
 
     private String id;
     private String facebookid;
@@ -28,6 +34,21 @@ public class User implements IUser {
     }
 
     public User(JSONObject jsonParams) throws JSONException {
+        setParams(jsonParams);
+    }
+
+    public User(Parcel in){
+        String jsonString=in.readString();
+        try {
+            JSONObject json = new JSONObject(jsonString);
+            setParams(json);
+        } catch (JSONException e) {
+            Log.e(TAG, "", e);
+        }
+
+    }
+
+    private void setParams(JSONObject jsonParams) throws JSONException {
         this.id=jsonParams.getString("id");
         this.facebookid=jsonParams.getString("facebookid");
         this.name=jsonParams.getString("name");
@@ -141,6 +162,17 @@ public class User implements IUser {
     }
 
     @Override
+    public Map<String, IUser> getFriends() {
+        return friends;
+    }
+
+    @Override
+    public void setFriends(Map<String, IUser> friends) {
+        this.friends = friends;
+    }
+
+
+    @Override
     public JSONObject toJSON() {
 
         Map<String, Object> map=new HashMap<String, Object>();
@@ -158,14 +190,23 @@ public class User implements IUser {
         return new JSONObject(map);
     }
 
-
     @Override
-    public Map<String, IUser> getFriends() {
-        return friends;
+    public int describeContents() {
+        return 0;
     }
 
+
     @Override
-    public void setFriends(Map<String, IUser> friends) {
-        this.friends = friends;
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.toJSON().toString());
     }
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        public User [] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

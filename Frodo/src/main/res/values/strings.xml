@@ -46,5 +46,6 @@
     <string name="camera_photo_share_icon_text">Share</string>
     <string name="title_activity_photo_detail">Pics</string>
     <string name="title_activity_photo_details">Pics</string>
+    <string name="title_activity_event">Event</string>
 
 </resources>

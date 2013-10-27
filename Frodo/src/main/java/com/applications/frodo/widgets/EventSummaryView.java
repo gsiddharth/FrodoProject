@@ -1,6 +1,7 @@
 package com.applications.frodo.widgets;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,7 +13,6 @@ import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,11 +22,11 @@ import android.widget.BaseAdapter;
 import com.applications.frodo.GlobalParameters;
 import com.applications.frodo.R;
 import com.applications.frodo.blocks.IEvent;
-import com.applications.frodo.db.PersistanceMap;
 import com.applications.frodo.networking.PictureDownloader;
 import com.applications.frodo.utils.Convertors;
 import com.applications.frodo.utils.GeneralUtils;
 import com.applications.frodo.views.checkin.EventCheckinFragment;
+import com.applications.frodo.views.event.EventActivity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public class EventSummaryView extends View implements PictureDownloader.PictureDownloaderListener{
 
-    private static String TAG=EventSummaryView.class.toString();
+    private static final String TAG=EventSummaryView.class.toString();
 
     private IEvent event;
 
@@ -99,8 +99,8 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
         if(event!=null){
             Bitmap image=null;
 
-            if(event.getImage()!=null){
-                image=getScaledBitmap(event.getImage(),HEIGHT-IMAGE_PADDING);
+            if(event.getIcon()!=null){
+                image=getScaledBitmap(event.getIcon(),HEIGHT-IMAGE_PADDING);
             }else{
                 image=defaultImage;
             }
@@ -173,15 +173,15 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
             }
         }
 
-        if(event.getImage()==null){
+        if(event.getIcon()==null){
             PictureDownloader downloader=new PictureDownloader(this);
-            downloader.execute(event.getImagePath());
+            downloader.execute(event.getIconPath());
         }
     }
 
     @Override
     public void onPictureDownload(Bitmap bitmap) {
-        this.event.setImage(bitmap);
+        this.event.setIcon(bitmap);
         invalidate();
         requestLayout();
     }
@@ -196,12 +196,18 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
 
 
     public void checkIn(){
-
         eventCheckinFragment.resetViewToNotCheckedIn();
         GlobalParameters.getInstance().setCheckedInEvent(this.event);
         this.leftPadding=SELECTED_LEFT_PADDING;
         invalidate();
         requestLayout();
+    }
+
+    public void startEventActivity(){
+        Intent intent=new Intent(getContext(), EventActivity.class);
+        intent.putExtra("event", event);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getContext().startActivity(intent);
     }
 
 
@@ -266,6 +272,7 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
+            startEventActivity();
             return true;
         }
 

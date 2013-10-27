@@ -130,6 +130,36 @@ public class Location implements ILocation {
         map.put("longitude",this.longitude);
 
         return new JSONObject(map);
+    }
 
+    @Override
+    public String toString(){
+
+        StringBuilder sb=new StringBuilder();
+
+        if(name!=null){
+            sb.append(name);
+            sb.append(",");
+        }
+        if(street!=null){
+            sb.append(street);
+            sb.append(",");
+        }
+
+        if(city!=null){
+            sb.append(city);
+            sb.append(",");
+        }
+
+        if(country!=null){
+            sb.append(country);
+            sb.append(",");
+        }
+
+        if(zip!=null){
+            sb.append(zip);
+        }
+
+        return sb.toString();
     }
 }

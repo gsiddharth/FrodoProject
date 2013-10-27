@@ -1,5 +1,9 @@
 <resources>
     <declare-styleable name="EventSummaryView">
-
     </declare-styleable>
+
+    <declare-styleable name="ExpandableTextView">
+        <attr name="trimLength" format="integer"/>
+    </declare-styleable>
+
 </resources>

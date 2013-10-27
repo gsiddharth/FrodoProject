@@ -26,7 +26,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/eventPhotoGridView"
-        android:numColumns="2"
         android:clickable="true"
-        ptr:ptrMode="pullDownFromTop"/>
+        android:background="#000"
+        ptr:ptrMode="pullDownFromTop"
+        ptr:ptrScrollingWhileRefreshingEnabled="true"/>
 </LinearLayout>

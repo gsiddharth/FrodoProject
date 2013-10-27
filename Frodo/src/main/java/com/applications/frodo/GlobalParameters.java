@@ -68,9 +68,7 @@ public class GlobalParameters {
     public IEvent getCheckedInEvent(){
         if(this.checkedInEvent==null ){
             try {
-                Log.i(TAG,"getting check in event");
                 this.checkedInEvent= (IEvent) PersistanceMap.getInstance().getObject("checked_in_event", null, Event.class);
-                Log.i(TAG,"got check in event "+this.checkedInEvent.getId());
             } catch (PersistanceMap.PersistanceMapUninitializedException e) {
                 Log.e(TAG, "PersistanceMap not Inititalized", e);
             }catch(NullPointerException e){

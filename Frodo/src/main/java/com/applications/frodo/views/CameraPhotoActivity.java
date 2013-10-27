@@ -75,12 +75,9 @@ public class CameraPhotoActivity extends Activity {
 
         if(file.exists()){
             try{
-                System.out.println(fileUri);
                 InputStream inputStream=new FileInputStream(file);
                 InputStream in=new BufferedInputStream(inputStream);
                 image= BitmapFactory.decodeStream(in);
-
-                System.out.println(image.getWidth()+" "+image.getHeight()+" "+image.getByteCount()/1024);
 
                 ImageView imageView = (ImageView) findViewById(R.id.cameraPhotoPhoto);
                 imageView.setImageBitmap(image);

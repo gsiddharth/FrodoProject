@@ -126,7 +126,7 @@ public class PhotoDetailsActivity extends FragmentActivity {
             View rootView = inflater.inflate(R.layout.photo_detail, container, false);
             final ImageView imageView = (ImageView) rootView.findViewById(R.id.singlePhotoView);
 
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             PictureDownloader downloader=new PictureDownloader(new PictureDownloader.PictureDownloaderListener() {
                 @Override
@@ -140,5 +140,4 @@ public class PhotoDetailsActivity extends FragmentActivity {
             return rootView;
         }
     }
-
 }

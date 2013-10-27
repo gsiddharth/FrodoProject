@@ -1,14 +1,16 @@
 package com.applications.frodo.blocks;
 
 import android.graphics.Bitmap;
+import android.os.Parcelable;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Comparator;
 
 /**
  * Created by siddharth on 09/10/13.
  */
-public interface IEvent extends IJSONable{
+public interface IEvent extends IJSONable, Parcelable{
 
     public Calendar getStartTime();
 
@@ -26,6 +28,14 @@ public interface IEvent extends IJSONable{
 
     public void setId(String id);
 
+    public Bitmap getIcon();
+
+    public void setIcon(Bitmap image);
+
+    public String getIconPath();
+
+    public void setIconPath(String path);
+
     public Bitmap getImage();
 
     public void setImage(Bitmap image);
@@ -33,6 +43,8 @@ public interface IEvent extends IJSONable{
     public String getImagePath();
 
     public void setImagePath(String path);
+
+
 
     public String getSummary();
 

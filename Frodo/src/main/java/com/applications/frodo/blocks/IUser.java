@@ -1,11 +1,13 @@
 package com.applications.frodo.blocks;
 
+import android.os.Parcelable;
+
 import java.util.Map;
 
 /**
  * Created by siddharth on 26/09/13.
  */
-public interface IUser extends IJSONable{
+public interface IUser extends IJSONable, Parcelable{
 
     /**
      * Returns the ID of the user.

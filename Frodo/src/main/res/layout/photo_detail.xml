@@ -3,12 +3,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="#ffffff" >
+    android:background="#000" >
 
 
   <ImageView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:id="@+id/singlePhotoView">
+      android:id="@+id/singlePhotoView"
+      android:focusable="true">
   </ImageView>
 </LinearLayout>

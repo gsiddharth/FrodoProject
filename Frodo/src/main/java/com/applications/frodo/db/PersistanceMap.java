@@ -17,8 +17,8 @@ import java.util.Set;
  */
 public class PersistanceMap {
 
-    private static PersistanceMap instance=new PersistanceMap();
-    private static String TAG=PersistanceMap.class.toString();
+    private static final PersistanceMap instance=new PersistanceMap();
+    private static final String TAG=PersistanceMap.class.toString();
     private SharedPreferences sharedPreferences;
     private boolean initialized =false;
 
