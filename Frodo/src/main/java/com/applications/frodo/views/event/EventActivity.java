@@ -16,7 +16,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.applications.frodo.R;
+import com.applications.frodo.blocks.CurrentEventFactory;
 import com.applications.frodo.blocks.IEvent;
+import com.applications.frodo.blocks.SingleEventFactory;
+import com.applications.frodo.socialnetworks.facebook.FacebookEvents;
+import com.applications.frodo.utils.GeneralUtils;
+import com.applications.frodo.widgets.EventPhotosFragment;
 
 public class EventActivity extends FragmentActivity {
 
@@ -51,7 +56,10 @@ public class EventActivity extends FragmentActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
+        if(event!=null){
+            System.out.println(event.getName());
+            setTitle(GeneralUtils.wrapText(event.getName(), 20, 1).get(0));
+        }
     }
 
     @Override
@@ -75,12 +83,23 @@ public class EventActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return new EventDetailFragment(event);
+            switch(position){
+                case 0:
+                    return new EventDetailFragment(event);
+                case 1:
+                    return new EventPhotosFragment(FacebookEvents.EventPhotosOf.ALL,new SingleEventFactory(event),3);
+                case 2:
+                    return new EventPhotosFragment(FacebookEvents.EventPhotosOf.NETWORK,new SingleEventFactory(event),3);
+                case 3:
+                    return new EventPhotosFragment(FacebookEvents.EventPhotosOf.MY, new SingleEventFactory(event),2);
+                default:
+                    return null;
+            }
         }
 
         @Override
         public int getCount() {
-            return 1;
+            return 4;
         }
 
         @Override
@@ -88,11 +107,13 @@ public class EventActivity extends FragmentActivity {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
+                    return "EVENT";
                 case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
+                    return "ALL PICS";
                 case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
+                    return "NETWORK PICS";
+                case 3:
+                    return "MY PICS";
             }
             return null;
         }

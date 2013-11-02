@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.applications.frodo.GlobalParameters;
 import com.applications.frodo.R;
@@ -50,7 +51,8 @@ public class CameraPhotoActivity extends Activity {
             public void onClick(View v) {
                 if(!clicked){
                     share();
-                    shareButton.setText("Sharing..");
+                    Toast toast=Toast.makeText(getBaseContext(),"Sharing", Toast.LENGTH_SHORT);
+                    toast.show();
                     clicked=true;
                 }
             }
@@ -58,12 +60,12 @@ public class CameraPhotoActivity extends Activity {
 
 
         Button cameraButton=(Button) findViewById(R.id.cameraPhotoCameraButton);
+
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent takePictureIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 fileUri= FileStorage.getOutputMediaFileUri(FileStorage.MEDIA_TYPE_IMAGE);
-                System.out.println(fileUri);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,fileUri);
                 startActivityForResult(takePictureIntent, 10101);
             }
@@ -98,7 +100,8 @@ public class CameraPhotoActivity extends Activity {
                 @Override
                 public void onPhotoShareComplete() {
                     final Button shareButton=(Button) findViewById(R.id.cameraPhotoShareButton);
-                    shareButton.setText("Shared");
+                    Toast toast=Toast.makeText(getBaseContext(),"Shared", Toast.LENGTH_SHORT);
+                    toast.show();
                 }
 
                 @Override

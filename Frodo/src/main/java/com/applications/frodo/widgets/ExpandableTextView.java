@@ -5,19 +5,18 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
 import com.applications.frodo.R;
 
-/**
- * User: Bazlur Rahman Rokon
- * Date: 9/7/13 - 3:33 AM
- */
 public class ExpandableTextView extends TextView {
     private static final int DEFAULT_TRIM_LENGTH = 200;
-    private static final String ELLIPSIS = "...";
+    private static final String ELLIPSIS = "";
     private CharSequence originalText;
     private CharSequence trimmedText;
     private BufferType bufferType;
@@ -28,11 +27,11 @@ public class ExpandableTextView extends TextView {
         this(context, null);
     }
 
-
     public ExpandableTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ExpandableTextView);
         this.trimLength = typedArray.getInt(R.styleable.ExpandableTextView_trimLength, DEFAULT_TRIM_LENGTH);
+
         typedArray.recycle();
 
         setOnClickListener(new OnClickListener() {
@@ -43,10 +42,11 @@ public class ExpandableTextView extends TextView {
                 requestFocusFromTouch();
             }
         });
+
     }
 
     private void setText() {
-        super.setText(Html.fromHtml(getDisplayableText().toString()), bufferType);
+        super.setText(getDisplayableText(), bufferType);
     }
 
     private CharSequence getDisplayableText() {
@@ -64,6 +64,12 @@ public class ExpandableTextView extends TextView {
     private CharSequence getTrimmedText(CharSequence text) {
         if (originalText != null && originalText.length() > trimLength) {
             SpannableStringBuilder ssb=new SpannableStringBuilder(originalText, 0, trimLength + 1).append(ELLIPSIS);
+            int color=getTextColors().getDefaultColor();
+
+            for(int i=ssb.length()/5;i>0;i-=2){
+                int newColor=Color.argb((int)(255.0*Math.sqrt(i/(ssb.length()/5.0))),Color.red(color), Color.green(color), Color.blue(color));
+                ssb.setSpan(new ForegroundColorSpan(newColor),ssb.length()-i,ssb.length()-i+2,0);
+            }
             return ssb;
         } else {
             return originalText;

@@ -3,14 +3,15 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="#ffffff" >
+    android:background="#cfcfcf" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#5B8FE9"
-        android:layout_weight="3">
+        android:background="#fff"
+        android:layout_weight="3"
+        android:layout_margin="5dp">
 
         <ImageView
             android:layout_width="match_parent"
@@ -25,42 +26,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#ffffff"
+        android:background="#cfcfcf"
         android:layout_weight="1"
-        android:layout_margin="2px">
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:background="#cfcfcf"
             android:layout_weight="1">
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/manageMyEventsMenuButton"
                 android:layout_weight="0.5"
-                android:background="#323e6f"
-                android:layout_margin="2px"
+                android:background="#222222"
                 android:clickable="true"
                 android:text="@string/events_icon_text"
                 android:textStyle="bold"
                 android:textSize="20dp"
-                android:textColor="#ffffff"
-                android:textAlignment="viewEnd" />
+                android:textColor="#fff"
+                android:textAlignment="viewEnd"
+                android:layout_marginBottom="5dp"/>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/uploadPhotosMenu"
                 android:layout_weight="0.5"
-                android:background="#5b8ee8"
+                android:background="#222222"
                 android:layout_margin="2px"
                 android:clickable="true"
                 android:text="@string/upload_icon_text"
                 android:textStyle="bold"
                 android:textSize="20dp"
-                android:textColor="#ffffff"
+                android:textColor="#fff"
                 android:textAlignment="viewEnd" />
         </LinearLayout>
 
@@ -68,7 +72,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:background="#fff"
+            android:layout_marginLeft="5dp">
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -82,8 +89,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="#ffffff"
-        android:layout_weight="0.5">
+        android:background="#cfcfcf"
+        android:layout_weight="0.5"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp">
 
 
         <Button
@@ -91,13 +101,12 @@
             android:layout_height="match_parent"
             android:id="@+id/checkinMenuButton"
             android:layout_weight="0.5"
-            android:background="#323e6f"
-            android:layout_margin="2px"
+            android:background="#222222"
             android:clickable="true"
             android:text="@string/checkin_icon_text"
             android:textStyle="bold"
             android:textSize="20dp"
-            android:textColor="#ffffff"
+            android:textColor="#fff"
             android:textAlignment="viewEnd"/>
 
         <Button
@@ -105,14 +114,14 @@
             android:layout_height="match_parent"
             android:id="@+id/cameraMenuButton"
             android:layout_weight="0.5"
-            android:background="#0e0e23"
-            android:layout_margin="2px"
+            android:background="#222222"
             android:clickable="true"
             android:text="@string/camera_icon_text"
             android:textStyle="bold"
             android:textSize="20dp"
-            android:textColor="#ffffff"
-            android:textAlignment="viewEnd" />
+            android:textColor="#fff"
+            android:textAlignment="viewEnd"
+            android:layout_marginLeft="5dp"/>
     </LinearLayout>
 
 

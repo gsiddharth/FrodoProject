@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.applications.frodo.GlobalParameters;
 import com.applications.frodo.R;
 import com.applications.frodo.blocks.IEvent;
 import com.applications.frodo.socialnetworks.ISocialNetworkEvents;
@@ -23,30 +25,30 @@ public class EventCheckinFragment  extends Fragment {
 
     private static final String TAG=EventCheckinFragment.class.toString();
     private ListView eventListView;
+    private View rootView;
+    private List<IEvent> events;
+    private EventSummaryView.EventSummaryListAdaptor eventAdaptor;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.event_checkin,
+        rootView = inflater.inflate(R.layout.event_checkin,
                 container, false);
-
         init();
-        return view;
+        return rootView;
     }
 
     /**
      * This function sets up the view of the events. It fetches the events from facebook and lists them
      */
     private void init(){
-
         FacebookEvents.getInstance().getEvents(new ISocialNetworkEvents.Callback() {
             @Override
-            public void onGetEvent(List<IEvent> events) {
-                setupEventList(events);
+            public void onGetEvent(List<IEvent> eventList) {
+                events=eventList;
+                setupEventList(eventList);
             }
         });
-
-
     }
 
     /**
@@ -54,20 +56,36 @@ public class EventCheckinFragment  extends Fragment {
      * @param events
      */
     public void setupEventList(List<IEvent> events){
-        EventSummaryView.EventSummaryListAdaptor eventAdaptor=new EventSummaryView.EventSummaryListAdaptor(events,this.getActivity().getBaseContext(), this);
-        eventListView= (ListView) this.getActivity().findViewById(R.id.eventListView);
-        eventListView.setAdapter(eventAdaptor);
+
+        LinearLayout layout=(LinearLayout) rootView.findViewById(R.id.eventlistlayout);
+        eventAdaptor=new EventSummaryView.EventSummaryListAdaptor(events,getActivity().getBaseContext(), this);
+        for(int i=0;i<events.size();i++){
+            layout.addView(eventAdaptor.getView(i,null,null));
+        }
     }
 
     public void resetViewToNotCheckedIn(){
-        int count=eventListView.getCount();
-        for(int i=0;i<count;i++){
-            try{
-                EventSummaryView summaryView=(EventSummaryView) eventListView.getAdapter().getView(i,null,null);
-                summaryView.resetToNotCheckedIn();
-            }catch(Exception e){
-                Log.e(TAG,"",e);
+        if(eventAdaptor!=null){
+            int count=eventAdaptor.getCount();
+            for(int i=0;i<count;i++){
+                try{
+                    if(!events.get(i).getId().equals(GlobalParameters.getInstance().getCheckedInEvent().getId())){
+                        EventSummaryView summaryView=(EventSummaryView) eventAdaptor.getView(i, null, null);
+                        summaryView.resetToNotCheckedIn();
+                    }else{
+                        EventSummaryView summaryView=(EventSummaryView) eventAdaptor.getView(i, null, null);
+                        summaryView.setToCheckedIn();
+                    }
+                }catch(Exception e){
+                    Log.e(TAG,"",e);
+                }
             }
         }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        resetViewToNotCheckedIn();
     }
 }

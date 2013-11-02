@@ -58,7 +58,8 @@
         </activity>
         <activity
             android:name=".views.event.EventActivity"
-            android:label="@string/title_activity_event" >
+            android:label="@string/title_activity_event"
+            android:screenOrientation="portrait" >
         </activity>
 
     </application>

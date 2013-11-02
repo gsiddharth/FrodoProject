@@ -34,6 +34,10 @@ public class GeneralUtils {
             sb.append(" ");
         }
 
+        if(list.size()<maxlines){
+            list.add(sb.toString());
+        }
+
         return list;
     }
 }

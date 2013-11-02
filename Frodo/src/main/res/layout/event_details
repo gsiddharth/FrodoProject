@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#ffffff" >
+    android:background="#cfcfcf"
+    android:soundEffectsEnabled="true">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -13,23 +14,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.7"
-                android:background="#000">
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/image">
-                </ImageView>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:id="@+id/image">
+            </ImageView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="#fff"
+                android:layout_marginBottom="5dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -40,12 +37,79 @@
                     android:textColor="#fff"
                     android:background="#535353">
                 </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp">
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:id="@+id/joinButton"
+                    android:layout_weight="0.5"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:text="Join"
+                    android:textSize="13sp"
+                    android:textAlignment="viewEnd" />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:id="@+id/inviteButton"
+                    android:layout_weight="0.5"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:text="Invite"
+                    android:textSize="13sp"
+                    android:textAlignment="viewEnd"
+                    android:layout_marginLeft="5dp"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:id="@+id/uploadButton"
+                    android:layout_weight="0.5"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:text="Upload"
+                    android:textSize="13sp"
+                    android:textAlignment="viewEnd"
+                    android:layout_marginLeft="5dp"/>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:id="@+id/checkinButton"
+                    android:layout_weight="0.5"
+                    android:background="#fff"
+                    android:clickable="true"
+                    android:text="Check In"
+                    android:textSize="13sp"
+                    android:textAlignment="viewEnd"
+                    android:layout_marginLeft="5dp"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:orientation="vertical"
+                android:background="#fff"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/eventdate"
                     android:text="Date"
-                    android:layout_marginLeft="10dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
                     android:textColor="#2b2b2b">
                 </TextView>
                 <TextView
@@ -53,24 +117,42 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/eventlocation"
                     android:text="Location"
-                    android:layout_marginLeft="10dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
                     android:textColor="#2b2b2b">
                 </TextView>
+            </LinearLayout>
 
-                <LinearLayout
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#fff"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+                <com.applications.frodo.widgets.ExpandableTextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-                    <com.applications.frodo.widgets.ExpandableTextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/eventabout"
-                        android:text="About"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="#2b2b2b" />
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:id="@+id/eventabout"
+                    android:text="About"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:textColor="#2b2b2b" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#fff"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp">
+    </LinearLayout>
 </LinearLayout>
 

@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="#ffffff" >
+    android:background="#cfcfcf" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -25,12 +25,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1000"
-        android:background="#000000">
+        android:background="#000">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/cameraPhotoPhoto"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:layout_margin="5dp">
         </ImageView>
     </LinearLayout>
 
@@ -38,32 +39,36 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:background="#cfcfcf"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp">
         <Button
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="35dp"
             android:id="@+id/cameraPhotoCameraButton"
             android:layout_weight="0.5"
-            android:background="#102d62"
-            android:layout_margin="2px"
+            android:background="#fff"
             android:clickable="true"
             android:text="@string/camera_photo_camera_icon_text"
             android:textStyle="bold"
-            android:textSize="20dp"
-            android:textColor="#ffffff"
+            android:textSize="13sp"
+            android:textColor="#2b2b2b"
             android:textAlignment="viewEnd" />
         <Button
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="35dp"
             android:id="@+id/cameraPhotoShareButton"
             android:layout_weight="0.5"
-            android:background="#102d62"
-            android:layout_margin="2px"
+            android:background="#fff"
+            android:layout_marginLeft="5dp"
             android:clickable="true"
             android:text="@string/camera_photo_share_icon_text"
             android:textStyle="bold"
-            android:textSize="20dp"
-            android:textColor="#ffffff"
+            android:textSize="13sp"
+            android:textColor="#2b2b2b"
             android:textAlignment="viewEnd" />
 
 

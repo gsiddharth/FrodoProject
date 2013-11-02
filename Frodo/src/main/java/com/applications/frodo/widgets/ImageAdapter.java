@@ -121,18 +121,19 @@ public class ImageAdapter extends BaseAdapter {
                 PictureDownloader downloader=new PictureDownloader(new PictureDownloader.PictureDownloaderListener() {
                     @Override
                     public void onPictureDownload(Bitmap bitmap) {
-                        if(bitmap.getWidth()/(double) bitmap.getHeight()>width/(double) height){
-                            bitmap=Bitmap.createScaledBitmap(bitmap,(int)(bitmap.getWidth()*height/(double) bitmap.getHeight()), height,false);
-                            bitmap=Bitmap.createBitmap(bitmap,(bitmap.getWidth()-width)/numOfColumns,0,width,height);
-                        }else{
-                            bitmap=Bitmap.createScaledBitmap(bitmap,width, (int)(bitmap.getHeight()*width/(double) bitmap.getWidth()),false);
-                            bitmap=Bitmap.createBitmap(bitmap,0,(bitmap.getHeight()-height)/numOfColumns,width,height);
+                        if(bitmap!=null){
+                            if(bitmap.getWidth()/(double) bitmap.getHeight()>width/(double) height){
+                                bitmap=Bitmap.createScaledBitmap(bitmap,(int)(bitmap.getWidth()*height/(double) bitmap.getHeight()), height,false);
+                                bitmap=Bitmap.createBitmap(bitmap,(bitmap.getWidth()-width)/numOfColumns,0,width,height);
+                            }else{
+                                bitmap=Bitmap.createScaledBitmap(bitmap,width, (int)(bitmap.getHeight()*width/(double) bitmap.getWidth()),false);
+                                bitmap=Bitmap.createBitmap(bitmap,0,(bitmap.getHeight()-height)/numOfColumns,width,height);
+                            }
+
+                            bitmap= Bitmap.createScaledBitmap(bitmap,Math.min(width,bitmap.getWidth()),height,false);
+                            imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                            imageView.setImageBitmap(bitmap);
                         }
-
-                        bitmap= Bitmap.createScaledBitmap(bitmap,Math.min(width,bitmap.getWidth()),height,false);
-                        imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-                        imageView.setImageBitmap(bitmap);
-
                     }
                 });
 

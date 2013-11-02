@@ -36,9 +36,11 @@ public class PictureDownloader extends AsyncTask<String, Integer, Bitmap[]>{
             Bitmap[] bitmaps=new Bitmap[urls.length];
             for(int i=0;i<urls.length;i++){
                 String urlstr=urls[i];
+
                 try{
                     Bitmap bitmap=cache.get(urlstr);
                     if(bitmap==null){
+
                         URL url=new URL(urlstr);
                         InputStream in=new BufferedInputStream(url.openStream());
                         bitmap= BitmapFactory.decodeStream(in);
@@ -46,12 +48,14 @@ public class PictureDownloader extends AsyncTask<String, Integer, Bitmap[]>{
                     }
 
                     bitmaps[i]=bitmap;
+
                     publishProgress((int) (i/((float) urls.length)*100));
 
                 }catch(Exception e){
                     bitmaps[i]=null;
                     Log.e(TAG,"Error while downloading a file from url "+urlstr,e);
                 }
+
             }
             return bitmaps;
         }

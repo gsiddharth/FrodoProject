@@ -3,7 +3,8 @@
     android:id="@+id/pager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CheckinActivity">
+    tools:context=".CheckinActivity"
+    android:focusableInTouchMode="false">
 
     <!--
     This title strip will display the currently visible page title, as well as the page

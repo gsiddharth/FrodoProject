@@ -46,6 +46,7 @@ public class FacebookEvents implements ISocialNetworkEvents{
     private static String[] possibleDateFormats={"yyyy-MM-dd'T'HH:mm:ssZ","yyyy-MM-dd"};
 
     private FacebookEvents(){
+
     }
 
     public static FacebookEvents getInstance(){
@@ -322,7 +323,6 @@ public class FacebookEvents implements ISocialNetworkEvents{
             }
         }
     }
-
 
     public enum EventPhotosOf{
         MY, NETWORK, ALL
