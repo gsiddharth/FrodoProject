@@ -42,10 +42,10 @@ public class EventCheckinFragment  extends Fragment {
      * This function sets up the view of the events. It fetches the events from facebook and lists them
      */
     private void init(){
-        FacebookEvents.getInstance().getEvents(new ISocialNetworkEvents.Callback() {
+        FacebookEvents.getInstance().getCurrentEventsIamGoingTo(new ISocialNetworkEvents.Callback() {
             @Override
             public void onGetEvent(List<IEvent> eventList) {
-                events=eventList;
+                events = eventList;
                 setupEventList(eventList);
             }
         });

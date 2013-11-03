@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -64,10 +65,8 @@ public class CameraPhotoActivity extends Activity {
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent takePictureIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                fileUri= FileStorage.getOutputMediaFileUri(FileStorage.MEDIA_TYPE_IMAGE);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,fileUri);
-                startActivityForResult(takePictureIntent, 10101);
+                dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+                dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
             }
         });
 
@@ -96,10 +95,10 @@ public class CameraPhotoActivity extends Activity {
 
     public void shareHelp(){
         if(image!=null){
+            System.out.println(image.getWidth());
             FacebookEvents.getInstance().sharePhoto(image, new FacebookEvents.FacebookCallbacks() {
                 @Override
                 public void onPhotoShareComplete() {
-                    final Button shareButton=(Button) findViewById(R.id.cameraPhotoShareButton);
                     Toast toast=Toast.makeText(getBaseContext(),"Shared", Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -134,26 +133,11 @@ public class CameraPhotoActivity extends Activity {
         return true;
     }
 
-    private void handleCameraPhoto(Intent intent) {
-
-        File file=new File(fileUri.getPath());
-        if(file.exists()){
-            Intent cameraIntent = new Intent(this.getBaseContext(), CameraPhotoActivity.class);
-            cameraIntent.putExtra("image", fileUri.getPath());
-            startActivity(cameraIntent);
-        }else{
-            Log.d(TAG,"No File of exists at the path"+fileUri.getPath());
-            Intent mainIntent=new Intent(this, ApplicationActivity.class);
-            startActivity(mainIntent);
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
-        if (requestCode == 10101) {
-            handleCameraPhoto(data);
-        }else if(requestCode==1023){
+
+        if(requestCode==1023){
             GlobalParameters.getInstance().setHasAllFBWritePermissions(true);
             shareHelp();
         }

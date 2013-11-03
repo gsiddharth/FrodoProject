@@ -21,6 +21,7 @@ import com.applications.frodo.R;
 import com.applications.frodo.utils.FileStorage;
 import com.applications.frodo.views.CameraPhotoActivity;
 import com.applications.frodo.views.checkin.CheckinActivity;
+import com.applications.frodo.views.event.EventCalendarActivity;
 import com.facebook.widget.LoginButton;
 
 import java.io.BufferedInputStream;
@@ -44,8 +45,6 @@ public class MenuFragment extends Fragment{
      */
     private static String TAG=MenuFragment.class.toString();
     public static final String ARG_SECTION_NUMBER = "1";
-    private Uri fileUri=null;
-
 
     public MenuFragment() {
     }
@@ -73,6 +72,15 @@ public class MenuFragment extends Fragment{
         });
 
 
+        Button eventsMenuBotton=(Button) rootView.findViewById(R.id.manageMyEventsMenuButton);
+
+        eventsMenuBotton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onEventButtonClick(view);
+            }
+        });
+
 
         return rootView;
     }
@@ -82,33 +90,18 @@ public class MenuFragment extends Fragment{
         startActivity(intent);
     }
 
-    public void onCameraButtonClick(View view){
-        Intent takePictureIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        fileUri= FileStorage.getOutputMediaFileUri(FileStorage.MEDIA_TYPE_IMAGE);
-        System.out.println(fileUri);
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,fileUri);
-        startActivityForResult(takePictureIntent, 10101);
+    public void onEventButtonClick(View view){
+        Intent intent=new Intent(this.getActivity(), EventCalendarActivity.class);
+        startActivity(intent);
     }
 
-    private void handleCameraPhoto(Intent intent) {
-
-        File file=new File(fileUri.getPath());
-        if(file.exists()){
-            Intent cameraIntent = new Intent(this.getActivity().getBaseContext(), CameraPhotoActivity.class);
-            cameraIntent.putExtra("image", fileUri.getPath());
-            startActivity(cameraIntent);
-        }else{
-            Log.d(TAG,"No File of exists at the path"+fileUri.getPath());
-            Intent mainIntent=new Intent(this.getActivity(), ApplicationActivity.class);
-            startActivity(mainIntent);
-        }
+    public void onCameraButtonClick(View view){
+        ApplicationActivity activity=(ApplicationActivity)getActivity();
+        activity.setView(0);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
-        if (requestCode == 10101) {
-            handleCameraPhoto(data);
-        }
     }
 }

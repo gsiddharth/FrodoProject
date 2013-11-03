@@ -121,15 +121,20 @@ public class EventDetailFragment extends Fragment implements PictureDownloader.P
         TextView location=(TextView) rootView.findViewById(R.id.eventlocation);
 
         ILocation loc=event.getLocation();
-        SpannableStringBuilder ssb=new SpannableStringBuilder();
-        setStyle(loc.getName(),ssb,new StyleSpan(Typeface.BOLD),"\n");
-        setStyle(loc.getStreet(),ssb,new StyleSpan(Typeface.NORMAL)," ");
-        setStyle(loc.getCity(),ssb,new StyleSpan(Typeface.NORMAL)," ");
-        setStyle(loc.getCountry(),ssb,new StyleSpan(Typeface.NORMAL)," ");
-        setStyle(loc.getZip(),ssb,new StyleSpan(Typeface.NORMAL)," ");
-        ssb=ssb.delete(ssb.length()-1,ssb.length());
-
-        location.setText(ssb);
+        if(loc!=null){
+            SpannableStringBuilder ssb=new SpannableStringBuilder();
+            setStyle(loc.getName(),ssb,new StyleSpan(Typeface.BOLD),"\n");
+            setStyle(loc.getStreet(),ssb,new StyleSpan(Typeface.NORMAL)," ");
+            setStyle(loc.getCity(),ssb,new StyleSpan(Typeface.NORMAL)," ");
+            setStyle(loc.getCountry(),ssb,new StyleSpan(Typeface.NORMAL)," ");
+            setStyle(loc.getZip(),ssb,new StyleSpan(Typeface.NORMAL)," ");
+            if(ssb.length()>0){
+                ssb=ssb.delete(ssb.length()-1,ssb.length());
+            }
+            location.setText(ssb);
+        }else{
+            location.setText("Unknown Location");
+        }
 
         TextView eventdate=(TextView)rootView.findViewById(R.id.eventdate);
 

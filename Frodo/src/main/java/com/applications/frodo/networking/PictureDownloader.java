@@ -40,7 +40,6 @@ public class PictureDownloader extends AsyncTask<String, Integer, Bitmap[]>{
                 try{
                     Bitmap bitmap=cache.get(urlstr);
                     if(bitmap==null){
-
                         URL url=new URL(urlstr);
                         InputStream in=new BufferedInputStream(url.openStream());
                         bitmap= BitmapFactory.decodeStream(in);
@@ -69,8 +68,10 @@ public class PictureDownloader extends AsyncTask<String, Integer, Bitmap[]>{
 
     @Override
     protected void onPostExecute(Bitmap[] results){
-        for(Bitmap result:results){
-            listener.onPictureDownload(result);
+        if(results!=null){
+            for(Bitmap result:results){
+                listener.onPictureDownload(result);
+            }
         }
     }
 

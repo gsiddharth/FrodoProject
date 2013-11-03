@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
+import android.view.View;
 
 import com.applications.frodo.db.PersistanceMap;
 import com.applications.frodo.networking.BackendRequestParameters;
@@ -78,13 +79,13 @@ public class MainActivity extends FragmentActivity{
     @Override
     protected void onResumeFragments() {
         super.onResumeFragments();
+        showFragment(LOGIN,false);
+    }
 
-        if(GlobalParameters.getInstance().getUser()==null){
-            showFragment(LOGIN,false);
-        }else{
-            Intent intent=new Intent(this, ApplicationActivity.class);
-            startActivity(intent);
-        }
+
+    public void startApplicationActivity(View view) {
+        Intent intent=new Intent(this, ApplicationActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -121,4 +122,5 @@ public class MainActivity extends FragmentActivity{
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
     }
+
 }

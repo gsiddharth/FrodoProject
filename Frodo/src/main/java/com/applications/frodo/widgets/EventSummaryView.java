@@ -48,10 +48,13 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
     private static final int TITLE_TEXT_SIZE =28;
     private static final int LOCATION_TEXT_SIZE =22;
     private static final int DATE_TEXT_SIZE =22;
+    private int backgroundColor=Color.parseColor("#cfcfcf");
+    private int titleColor=Color.parseColor("#5B5B5B");
     private int SELECTED_LEFT_PADDING=35;
     private int leftPadding=0;
     private int screenWidth;
     private int borderWidth=10;
+    private float lastFocusX;
 
     private Bitmap defaultImage=null;
     private GestureDetector detector;
@@ -67,6 +70,7 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
         TypedArray a= context.getTheme().obtainStyledAttributes(attrs, R.styleable.EventSummaryView,0,0);
         defaultImage= BitmapFactory.decodeResource(getResources(),R.drawable.no_image_icon);
         defaultImage=getScaledBitmap(defaultImage, HEIGHT - IMAGE_PADDING);
+
         DisplayMetrics mat=context.getResources().getDisplayMetrics();
         screenWidth=mat.widthPixels;
 
@@ -75,7 +79,6 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
         a.recycle();
     }
 
-    private float lastFocusX;
 
     @Override
     public boolean onTouchEvent(MotionEvent ev){
@@ -139,7 +142,7 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
 
             //draws border
             Paint borderRect1Paint=new Paint();
-            borderRect1Paint.setColor(Color.parseColor("#cfcfcf"));
+            borderRect1Paint.setColor(backgroundColor);
             canvas.drawRect(0,0,screenWidth,HEIGHT,borderRect1Paint);
 
             Paint borderRect2Paint=new Paint();
@@ -149,7 +152,7 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
             //move the card to the right
             if(this.leftPadding>0){
                 Paint leftPaddingRectPaint=new Paint();
-                leftPaddingRectPaint.setColor(Color.parseColor("#cfcfcf"));
+                leftPaddingRectPaint.setColor(backgroundColor);
                 canvas.drawRect(0.0f,0.0f,(float) leftPadding,(float) HEIGHT, leftPaddingRectPaint);
             }
             canvas.drawBitmap(image,leftPadding+IMAGE_PADDING/2,IMAGE_PADDING/2,new Paint());
@@ -159,7 +162,7 @@ public class EventSummaryView extends View implements PictureDownloader.PictureD
             titlePaint.setTextSize(TITLE_TEXT_SIZE);
             titlePaint.setTypeface(Typeface.DEFAULT_BOLD);
             titlePaint.setUnderlineText(true);
-            titlePaint.setColor(Color.parseColor("#5B5B5B"));
+            titlePaint.setColor(titleColor);
             if(event.getName().length()>(screenWidth-newW)/TITLE_TEXT_SIZE*2){
                 canvas.drawText(event.getName().substring(0,(int) ((screenWidth-newW)/TITLE_TEXT_SIZE*1.8))+"...",leftPadding+newW+10,35, titlePaint);
             }else{

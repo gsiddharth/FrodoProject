@@ -54,12 +54,26 @@ public class FacebookEvents implements ISocialNetworkEvents{
     }
 
     @Override
-    public void getEvents(final Callback callback) {
+    public void getCurrentEventsIamGoingTo(final Callback callback) {
         String fqlQuery = "SELECT name, description, start_time, end_time, eid, venue, location, pic_cover, pic_square " +
                 "from event WHERE eid in (SELECT eid FROM event_member WHERE uid = "
                 + GlobalParameters.getInstance().getUser().getFacebookId()+ " and (rsvp_status = " +
                 "'attending' or rsvp_status='unsure')) and (start_time >='"+ GeneralUtils.getYesterdayDate()+
                 "' or end_time >='"+GeneralUtils.getYesterdayDate()+"')";
+        getEvents(fqlQuery, callback);
+    }
+
+
+    @Override
+    public void getMyEvents(final Callback callback) {
+        String fqlQuery = "SELECT name, description, start_time, end_time, eid, venue, location, pic_cover, pic_square " +
+                "from event WHERE creator = " +GlobalParameters.getInstance().getUser().getId();
+
+        getEvents(fqlQuery, callback);
+    }
+
+
+    private void getEvents(String fqlQuery, final Callback callback){
 
         Bundle params = new Bundle();
         params.putString("q", fqlQuery);
@@ -125,7 +139,13 @@ public class FacebookEvents implements ISocialNetworkEvents{
                         if(!eventJSONOject.isNull("location")) locationName=eventJSONOject.getString("location");
 
                         ILocation location=null;
-                        if(!eventJSONOject.isNull("venue")) location= convertToLocation(eventJSONOject.getJSONObject("venue"), locationName);
+                        if(!eventJSONOject.isNull("venue")){
+                            try{
+                            location= convertToLocation(eventJSONOject.getJSONObject("venue"), locationName);
+                            }catch(Exception e){
+                                location=null;
+                            }
+                        }
 
                         events.add(new Event(eventId,eventName,eventSummary,eventStartTime,eventEndTime,icon, image,location));
 
@@ -197,8 +217,9 @@ public class FacebookEvents implements ISocialNetworkEvents{
 
             byte[] data;
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            image.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+            image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             data = baos.toByteArray();
+            System.out.println(data.length);
 
             postParams.putByteArray("source", data);
 
@@ -209,6 +230,7 @@ public class FacebookEvents implements ISocialNetworkEvents{
             };
 
             IEvent checkedInEvent=GlobalParameters.getInstance().getCheckedInEvent();
+
             if(checkedInEvent!=null && checkedInEvent.getId()!=null){
                 Request request = new Request(session, checkedInEvent.getId()+ "/photos", postParams,
                         HttpMethod.POST, callback);
@@ -217,10 +239,6 @@ public class FacebookEvents implements ISocialNetworkEvents{
                 task.execute();
             }
         }
-    }
-
-    public void checkForPermissions(){
-        Session.isPublishPermission("");
     }
 
     public interface FacebookCallbacks{

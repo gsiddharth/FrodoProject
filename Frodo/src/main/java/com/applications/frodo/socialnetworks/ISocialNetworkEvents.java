@@ -13,7 +13,9 @@ public interface ISocialNetworkEvents {
      * This function is used to get events from the given social network
      * @param callback This is the interface used to callback once you get the events
      */
-    public void getEvents(Callback callback);
+    public void getCurrentEventsIamGoingTo(Callback callback);
+
+    public void getMyEvents(Callback callback);
 
     /**
      * Interface to implement event callbacks

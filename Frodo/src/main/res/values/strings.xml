@@ -28,7 +28,7 @@
 
     <!-- Menu Screen Settings -->
     <string name="camera_icon_text">Camera</string>
-    <string name="events_icon_text">My Events</string>
+    <string name="events_icon_text">Events</string>
     <string name="checkin_icon_text">Check In</string>
     <string name="photos_icon_text">Photos</string>
     <string name="title_activity_application">Frodo</string>
@@ -47,5 +47,6 @@
     <string name="title_activity_photo_detail">Pics</string>
     <string name="title_activity_photo_details">Pics</string>
     <string name="title_activity_event">Event</string>
+    <string name="title_activity_event_calendar">Events</string>
 
 </resources>

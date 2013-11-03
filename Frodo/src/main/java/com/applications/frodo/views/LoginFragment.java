@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.applications.frodo.GlobalParameters;
 import com.applications.frodo.R;
@@ -55,12 +56,18 @@ public class LoginFragment extends Fragment{
         String readPermissions[]= getResources().getString(R.string.facebook_read_permissions).split(",");
         authButton.setReadPermissions(Arrays.asList(readPermissions));
 
+        Button menuButton=(Button) view.findViewById(R.id.menu_button);
+        if(GlobalParameters.getInstance().getUser()==null){
+            menuButton.setVisibility(View.INVISIBLE);
+        }else{
+            menuButton.setVisibility(View.VISIBLE);
+        }
+
         return view;
     }
 
     private synchronized void onSessionStateChange(Session session, SessionState state, Exception exception) {
 
-        System.out.println("sessions..");
         if (isResumed) {
             FragmentManager manager = this.getFragmentManager();
             // Get the number of entries in the back stack
@@ -95,6 +102,9 @@ public class LoginFragment extends Fragment{
 
         final Session session=Session.getActiveSession();
         final Activity currentActivity=this.getActivity();
+
+        Button menuButton=(Button) getView().findViewById(R.id.menu_button);
+        menuButton.setVisibility(View.VISIBLE);
 
         Request request = Request.newMeRequest(session,
                 new Request.GraphUserCallback() {
